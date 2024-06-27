@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ChIJu1izeX3J1EARk9zhsGAhq2g",
+    "location": { "lat": 50.3869249, "lng": 30.4663823 },
+    "businessStatus": "OPERATIONAL",
+    "routeStatus": "DONE"
+  },
+  {
+    "id": "ChIJqb7Hr1DJ1EAR3K4HW-IXeOY",
+    "location": { "lat": 50.383380599999995, "lng": 30.4637516 },
+    "businessStatus": "OPERATIONAL",
+    "routeStatus": "DONE"
+  },
+  {
+    "id": "ChIJPwWsUovJ1EAR_h_QWT8wCcI",
+    "location": { "lat": 50.3868156, "lng": 30.4659407 },
+    "businessStatus": "OPERATIONAL",
+    "routeStatus": "IN_PROGRESS"
+  },
+  {
+    "id": "ChIJ3f4zzx_J1EARtL3VFv_U2v0",
+    "location": { "lat": 50.388933699999995, "lng": 30.463039000000002 },
+    "businessStatus": "OPERATIONAL",
+    "routeStatus": "IN_PROGRESS"
+  },
+  {
+    "id": "ChIJpUvrp5bJ1EAR6DwLO_6i6yA",
+    "location": { "lat": 50.3838687, "lng": 30.461026099999998 },
+    "businessStatus": "OPERATIONAL",
+    "routeStatus": "TO_DO"
+  },
+  {
+    "id": "ChIJ1_PI6GDJ1EARh6q_BO-44-M",
+    "location": { "lat": 50.3839097, "lng": 30.4611817 },
+    "businessStatus": "OPERATIONAL",
+    "routeStatus": "TO_DO"
+  },
+  {
+    "id": "ChIJ-XX4luHI1EARMklWemTvSaQ",
+    "location": { "lat": 50.386019700000006, "lng": 30.4644314 },
+    "businessStatus": "OPERATIONAL",
+    "routeStatus": "TO_DO"
+  },
+  {
+    "id": "ChIJL6uYXKrJ1EARTqCzHeAw31g",
+    "location": { "lat": 50.386363300000006, "lng": 30.466344999999993 },
+    "businessStatus": "OPERATIONAL",
+    "routeStatus": "TO_DO"
+  },
+  {
+    "id": "ChIJd2ZbcyXJ1EARCkaawYEikic",
+    "location": { "lat": 50.3859551, "lng": 30.4646362 },
+    "businessStatus": "OPERATIONAL",
+    "routeStatus": "TO_DO"
+  },
+  {
+    "id": "ChIJUXsxrX7J1EARbKt2GUxLfZQ",
+    "location": { "lat": 50.386463300000006, "lng": 30.466344999999993 },
+    "businessStatus": "OPERATIONAL",
+    "routeStatus": "TO_DO"
+  },
+  {
+    "id": "ChIJSc0D6JjJ1EARR51_CJJziYI",
+    "location": { "lat": 50.3898349, "lng": 30.463112799999998 },
+    "businessStatus": "OPERATIONAL",
+    "routeStatus": "TO_DO"
+  },
+  {
+    "id": "ChIJF3BgecDJ1EARJFe-DjXlnSc",
+    "location": { "lat": 50.386624999999995, "lng": 30.4595046 },
+    "businessStatus": "OPERATIONAL",
+    "routeStatus": "DONE"
+  }
+]
