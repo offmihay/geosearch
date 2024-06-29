@@ -10,7 +10,7 @@ function CreateRoutePage() {
   const routeRef = useRef<google.maps.DirectionsService | null>(null);
 
   const [startAddress, setStartAddress] = useState<string>("");
-  const [isAddressSelected, setIsAddressSelected] = useState<boolean>(false);
+  const [, setIsAddressSelected] = useState<boolean>(false);
 
   const [selectedPlacesId, setSelectedPlacesId] = useState<string[]>([]);
 

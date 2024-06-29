@@ -1,6 +1,6 @@
 import { Button, Layout } from "antd";
 
-import { LogoutOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
+import { MenuOutlined } from "@ant-design/icons";
 import useIsMobile from "../hooks/useIsMobile";
 
 export interface HeaderProps {
