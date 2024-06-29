@@ -6,7 +6,9 @@ import useIsMobile from "../hooks/useIsMobile";
 import Header from "./Header";
 import Sider from "./Sider";
 import CreateRoutePage from "../pages/CreateRoutePage";
-import WorkPage from "../pages/WorkPage";
+import RoutesListPage from "../pages/RoutesListPage";
+import RouteInfoPage from "../pages/RouteInfoPage";
+import FindPlacesPage from "../pages/FindPlacesPage";
 
 const { Content } = Layout;
 
@@ -37,7 +39,9 @@ const HomepageLayout = () => {
           <Routes>
             <Route path="/" element={<SetLocalStorageAndRedirect />} />
             <Route path="create-route" element={<CreateRoutePage />} />
-            <Route path="work" element={<WorkPage />} />
+            <Route path="routes" element={<RoutesListPage />} />
+            <Route path="routes/:id" element={<RouteInfoPage />} />
+            <Route path="find-places" element={<FindPlacesPage />} />
           </Routes>
         </Content>
       </Layout>

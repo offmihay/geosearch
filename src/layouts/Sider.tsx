@@ -38,11 +38,11 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
       },
     },
     {
-      key: "work",
+      key: "routes",
       icon: React.createElement(CompassOutlined),
       label: "Працювати",
       onClick: () => {
-        handleSetActiveMenu("work");
+        handleSetActiveMenu("routes");
       },
     },
     {
@@ -67,7 +67,7 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
           left: 0,
           top: 0,
           bottom: 0,
-          zIndex: 10,
+          zIndex: 20,
         }}
         collapsedWidth="0"
         collapsible
