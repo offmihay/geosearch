@@ -19,6 +19,7 @@ function RoutesListPage() {
             date={new Date(route.created_at).toLocaleString("ru-UA")}
             handleOpenCard={() => navigate(`${route._id}`)}
             img_url={route.img_url}
+            onDelete={() => {}}
           />
         ))}
       </div>
