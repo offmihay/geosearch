@@ -155,21 +155,21 @@ function CreateRoutePage() {
     }
     placesQuery.data.forEach((place: PlaceSearch) => {
       const pinDone = new google.maps.marker.PinElement({
-        scale: 0.75,
+        scale: 1,
         background: "#DCDCDC",
         borderColor: "#A9A9A9",
         glyphColor: "#A9A9A9",
       });
 
       const pinDefault = new google.maps.marker.PinElement({
-        scale: 0.75,
+        scale: 1,
         background: "#87CEFA",
         borderColor: "#4169E1",
         glyphColor: "#4169E1",
       });
 
       const pinSelected = new google.maps.marker.PinElement({
-        scale: 0.75,
+        scale: 1,
         background: "#2DEC59",
         borderColor: "#2FC351",
         glyphColor: "#2FC351",
@@ -183,6 +183,7 @@ function CreateRoutePage() {
         title: place.place_id,
         gmpClickable: !isFinished(place),
         content: isFinished(place) ? pinDone.element : pinDefault.element,
+        // collisionBehavior: google.maps.CollisionBehavior.OPTIONAL_AND_HIDES_LOWER_PRIORITY,
       };
 
       const markerView = new AdvancedMarkerElement(markerOptions);
