@@ -59,8 +59,8 @@ function CreateRoutePage() {
   const addRouteMutation = useAddRouteMutation();
 
   useEffect(() => {
-    isMapLoaded && handleSetMarkers();
-  }, [isMapLoaded]);
+    isMapLoaded && placesQuery.isSuccess && handleSetMarkers();
+  }, [isMapLoaded, placesQuery.isSuccess]);
 
   useEffect(() => {
     isModalOpen && handleLoadAutocomplete();
@@ -155,21 +155,21 @@ function CreateRoutePage() {
     }
     placesQuery.data.forEach((place: PlaceSearch) => {
       const pinDone = new google.maps.marker.PinElement({
-        scale: 1.25,
+        scale: 0.75,
         background: "#DCDCDC",
         borderColor: "#A9A9A9",
         glyphColor: "#A9A9A9",
       });
 
       const pinDefault = new google.maps.marker.PinElement({
-        scale: 1.25,
+        scale: 0.75,
         background: "#87CEFA",
         borderColor: "#4169E1",
         glyphColor: "#4169E1",
       });
 
       const pinSelected = new google.maps.marker.PinElement({
-        scale: 1.25,
+        scale: 0.75,
         background: "#2DEC59",
         borderColor: "#2FC351",
         glyphColor: "#2FC351",

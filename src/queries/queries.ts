@@ -39,13 +39,12 @@ export const useAddRouteMutation = () => {
   });
 };
 
-export const useCertainPlaceQuery = (id: string) => {
+export const useCertainPlaceQuery = (id?: string) => {
   return useQuery({
-    queryKey: ["place"],
-    queryFn: () => getJson(`places/${id}`),
-    initialData: [],
+    queryKey: ["place", id],
+    queryFn: (): Promise<PlaceSearch> => getJson(`places/${id}`),
     refetchOnWindowFocus: false,
     retry: 0,
-    enabled: id.length != 0,
+    enabled: !!id,
   });
 };
