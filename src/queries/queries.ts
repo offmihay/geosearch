@@ -39,12 +39,21 @@ export const useAddRouteMutation = () => {
   });
 };
 
-export const useCertainPlaceQuery = (id?: string) => {
+export const useCurrPlaceQuery = (routeId?: string) => {
   return useQuery({
-    queryKey: ["place", id],
-    queryFn: (): Promise<PlaceSearch> => getJson(`places/${id}`),
+    queryKey: ["curr-place"],
+    queryFn: (): Promise<{ isEmpty: boolean; place?: PlaceSearch }> =>
+      getJson(`routes/${routeId}/curr-place`),
     refetchOnWindowFocus: false,
     retry: 0,
-    enabled: !!id,
+    enabled: !!routeId,
+  });
+};
+
+export const useDeactivateRouteMutation = () => {
+  return useMutation({
+    mutationKey: ["deactivate-route"],
+    mutationFn: (routeId: string) => postJson(`routes/${routeId}/deactivate`),
+    retry: 3,
   });
 };
