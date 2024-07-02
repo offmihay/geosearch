@@ -57,3 +57,12 @@ export const useDeactivateRouteMutation = () => {
     retry: 3,
   });
 };
+
+export const useUpdatePlaceStatusMutation = () => {
+  return useMutation({
+    mutationKey: ["update-place-status"],
+    mutationFn: (values: { place_id: string; place_status: PlaceSearch["place_status"] }) =>
+      postJson("places/update-status", values),
+    retry: 3,
+  });
+};

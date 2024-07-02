@@ -53,7 +53,7 @@ const RouteCard: React.FC<LogoCardProps> = ({
         </div>
         <Progress percent={Number(percentage)} />
         <Popconfirm
-          title="Видалити маршрут"
+          title="Примусово закінчити маршрут"
           description="a u sure"
           icon={<QuestionCircleOutlined style={{ color: "red" }} />}
           onConfirm={onDelete}

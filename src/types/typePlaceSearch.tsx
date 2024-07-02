@@ -8,6 +8,6 @@ export interface PlaceSearch {
   city: string;
   national_phone_number?: string | null;
   display_name?: string | null;
-  place_status?: "DONE" | "IN_PROGRESS" | "TO_DO" | "NOT_EXIST";
+  place_status?: "DONE" | "IN_PROGRESS" | "TO_DO" | "NOT_EXIST" | "CLOSED";
   created_at?: Date;
 }

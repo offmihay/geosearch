@@ -39,8 +39,8 @@ const HomepageLayout = () => {
           <Routes>
             <Route path="/" element={<SetLocalStorageAndRedirect />} />
             <Route path="create-route" element={<CreateRoutePage />} />
-            <Route path="routes" element={<RoutesListPage />} />
-            <Route path="routes/:id" element={<RouteInfoPage />} />
+            <Route path="/routes" element={<RoutesListPage />} />
+            <Route path="/routes/:id" element={<RouteInfoPage />} />
             <Route path="find-places" element={<FindPlacesPage />} />
           </Routes>
         </Content>
