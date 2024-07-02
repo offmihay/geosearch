@@ -20,11 +20,14 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
 
   useEffect(() => {
     handleSetActiveMenu(localStorage.getItem("siderMenuActive") || "create-route");
+    const suffix = localStorage.getItem("suffixLink") || "";
+    navigate(`${activeKey}/${suffix}`);
   }, []);
 
   const handleSetActiveMenu = (key: string) => {
     setActiveKey(key);
     localStorage.setItem("siderMenuActive", key);
+
     navigate(key);
   };
 

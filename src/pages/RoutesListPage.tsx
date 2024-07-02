@@ -7,6 +7,7 @@ import { notification } from "antd";
 function RoutesListPage() {
   const routesQuery = useRoutesQuery();
   const deactivateRouteMutation = useDeactivateRouteMutation();
+  localStorage.setItem("suffixLink", "");
 
   const navigate = useNavigate();
 
@@ -36,9 +37,13 @@ function RoutesListPage() {
           <RouteCard
             key={route.name}
             percentage={route.route_status_percentage}
+            routes_done={route.routes_done || 0}
             title={route.name}
             date={new Date(route.created_at).toLocaleString("ru-UA")}
-            handleOpenCard={() => navigate(`${route._id}`)}
+            handleOpenCard={() => {
+              navigate(`${route._id}`);
+              localStorage.setItem("suffixLink", `${route._id}` || "");
+            }}
             img_url={route.img_url}
             onDelete={() => deactivateRoute(route._id || "")}
             countRoute={route.places_id_set.length}

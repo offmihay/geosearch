@@ -11,6 +11,7 @@ interface LogoCardProps {
   onDelete: () => void;
   countRoute: number;
   is_active: boolean;
+  routes_done: number;
 }
 
 const RouteCard: React.FC<LogoCardProps> = ({
@@ -22,6 +23,7 @@ const RouteCard: React.FC<LogoCardProps> = ({
   onDelete,
   countRoute,
   is_active,
+  routes_done,
 }) => {
   return (
     <Card
@@ -30,7 +32,8 @@ const RouteCard: React.FC<LogoCardProps> = ({
       onClick={() => is_active && handleOpenCard()}
     >
       <div className="flex flex-col items-center w-full gap-4 mb-4">
-        <p className="font-bold text-[20px]">{`${title} - ${countRoute} точок`}</p>
+        <p className="font-bold text-[20px]">{`${title}`}</p>
+        <p className="font-bold text-[20px]">{`${routes_done}/${countRoute}`}</p>
         <p className="font-normal text-[16px]">{date}</p>
       </div>
       <div className="w-full h-[350px] flex justify-center items-center flex-col gap-4 ">
