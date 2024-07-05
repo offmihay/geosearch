@@ -144,7 +144,6 @@ function CreateRoutePage() {
 
   const handleSetMarkers = async () => {
     const map = mapRef.current!;
-    const bounds = new google.maps.LatLngBounds();
 
     const { AdvancedMarkerElement } = (await google.maps.importLibrary(
       "marker"
@@ -193,21 +192,17 @@ function CreateRoutePage() {
           handleClickMarker(place.place_id, markerView, pinDefault, pinSelected);
         });
       }
-
-      bounds.extend(location as unknown as google.maps.LatLng);
     });
-
-    map.fitBounds(bounds);
   };
 
   const handleCreateMap = async () => {
     const { Map } = (await google.maps.importLibrary("maps")) as google.maps.MapsLibrary;
 
-    const center = new google.maps.LatLng(50.38637, 30.46218);
+    const center = new google.maps.LatLng(50.39942, 30.50656);
 
     mapRef.current = new Map(document.getElementById("map")!, {
       center: center,
-      zoom: 11,
+      zoom: 14,
       mapId: "d4f8bd35a29bd93f",
       disableDefaultUI: true,
       clickableIcons: false,

@@ -141,7 +141,7 @@ function FindPlacesPage() {
                 "plusCode",
               ],
               locationRestriction: { center, radius },
-              includedPrimaryTypes: ["pet_store", "veterinary_care"],
+              includedTypes: ["pet_store", "veterinary_care"],
               language: "uk",
             };
             const { places } = await Place.searchNearby(request);
@@ -173,7 +173,7 @@ function FindPlacesPage() {
                 display_name: place.displayName,
               };
               placesCollected.push(placeObj);
-              // console.log(placeObj);
+              console.log(placeObj);
             });
           }
           setProgress((prev) => ({ done: prev.done + 1, total: prev.total }));
