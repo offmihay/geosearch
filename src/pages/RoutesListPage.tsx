@@ -32,7 +32,7 @@ function RoutesListPage() {
 
   return (
     <div className="m-4">
-      <div className="flex flex-wrap-reverse gap-4 justify-center">
+      <div className="flex flex-wrap-reverse flex-row-reverse gap-4 justify-center">
         {routesQuery.data?.map((route: RouteObj) => (
           <RouteCard
             key={route.name}

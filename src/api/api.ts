@@ -1,6 +1,4 @@
-const BASE_URL: string = "https://geosearch-back-23b9e14574c6.herokuapp.com";
-
-// const BASE_URL: string = "http://192.168.1.143:3000";
+const BASE_URL = import.meta.env.VITE_BACKEND_API;
 
 export async function sendJson(req: {
   url: string;

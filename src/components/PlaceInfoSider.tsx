@@ -11,7 +11,10 @@ type PlaceInfoSiderProps = {
 export default function PlaceInfoSider({ id }: PlaceInfoSiderProps) {
   return (
     <div className="container">
-      <APILoader apiKey={process.env.REACT_APP_API} solutionChannel="GMP_GCC_placeoverview_v1_xl" />
+      <APILoader
+        apiKey={import.meta.env.VITE_GOOGLE_MAPS_API}
+        solutionChannel="GMP_GCC_placeoverview_v1_xl"
+      />
       <PlaceOverview place={id} google-logo-already-displayed>
         <PlaceDirectionsButton slot="action">Directions</PlaceDirectionsButton>
       </PlaceOverview>
