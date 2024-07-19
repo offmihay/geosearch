@@ -18,6 +18,8 @@ export async function sendJson(req: {
     method,
     headers: {
       "Content-Type": "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTkxMThlODRiOWVjMTIwZTM5OWQxOSIsImlhdCI6MTcyMTMxMDY1NSwiZXhwIjoxNzIzOTAyNjU1fQ.ip7Ut7QKclkouolDSRthjCM5eget3yQIhv0MF50l6mQ",
     },
   };
 

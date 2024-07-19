@@ -17,7 +17,7 @@ const regions = [
   "Kharkiv",
   "Kherson",
   "Khmelnytskyy",
-  "Kiev",
+  "Kyiv",
   "Kirovohrad",
   "Luhansk",
   "Lviv",
@@ -50,7 +50,7 @@ function FindPlacesPage() {
 
   const fetchPolygon = async (region: string) => {
     try {
-      const response = await fetch(`regions/${region}.json`);
+      const response = await fetch(`/regions/${region}.json`);
       if (!response.ok) {
         throw new Error(`Error fetching the file: ${response.statusText}`);
       }
@@ -99,6 +99,7 @@ function FindPlacesPage() {
           message: "Помилка",
           description: `Невірно вказані дані`,
         });
+        setIsLoading(false);
         return;
       }
 
@@ -107,6 +108,7 @@ function FindPlacesPage() {
           message: "Помилка",
           description: `Неправильно вказані координати`,
         });
+        setIsLoading(false);
         return;
       }
 
