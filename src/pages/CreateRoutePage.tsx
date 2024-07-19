@@ -217,57 +217,58 @@ function CreateRoutePage() {
   };
 
   const handleGetRoutes = async () => {
-    const selectedRoute = selectedPlacesId;
+    setOrderedPlacesId(selectedPlacesId);
+    // const selectedRoute = selectedPlacesId;
 
-    if (selectedRoute.length == 0) {
-      console.error("Routes not found");
-      return;
-    }
+    // if (selectedRoute.length == 0) {
+    //   console.error("Routes not found");
+    //   return;
+    // }
 
-    const { DirectionsService } = (await google.maps.importLibrary(
-      "routes"
-    )) as google.maps.RoutesLibrary;
+    // const { DirectionsService } = (await google.maps.importLibrary(
+    //   "routes"
+    // )) as google.maps.RoutesLibrary;
 
-    routeRef.current = new DirectionsService();
-    const geocoder = new google.maps.Geocoder();
+    // routeRef.current = new DirectionsService();
+    // const geocoder = new google.maps.Geocoder();
 
-    // Geocode start address
-    const startPlaceId = await geocodeAddress(geocoder, startAddress);
+    // // Geocode start address
+    // const startPlaceId = await geocodeAddress(geocoder, startAddress);
 
-    if (!startPlaceId) {
-      notification.warning({
-        message: "Помилка",
-        description: `Перевірте чи правильно ви заповнили дані`,
-      });
-      return;
-    }
+    // if (!startPlaceId) {
+    //   notification.warning({
+    //     message: "Помилка",
+    //     description: `Перевірте чи правильно ви заповнили дані`,
+    //   });
+    //   return;
+    // }
 
-    const waypoints = selectedRoute.map((placeId) => ({
-      location: { placeId },
-      stopover: true,
-    }));
+    // const waypoints = selectedRoute.map((placeId) => ({
+    //   location: { placeId },
+    //   stopover: true,
+    // }));
 
-    routeRef.current.route(
-      {
-        origin: { placeId: startPlaceId },
-        destination: { placeId: startPlaceId },
-        waypoints,
-        optimizeWaypoints: true,
-        travelMode: google.maps.TravelMode.WALKING,
-      },
-      (result: google.maps.DirectionsResult | null, status: google.maps.DirectionsStatus) => {
-        if (status === google.maps.DirectionsStatus.OK && result) {
-          const optimizedOrder = result.routes[0].waypoint_order;
+    // routeRef.current.route(
+    //   {
+    //     origin: { placeId: startPlaceId },
+    //     destination: { placeId: startPlaceId },
+    //     waypoints,
+    //     optimizeWaypoints: true,
+    //     travelMode: google.maps.TravelMode.WALKING,
+    //   },
+    //   (result: google.maps.DirectionsResult | null, status: google.maps.DirectionsStatus) => {
+    //     if (status === google.maps.DirectionsStatus.OK && result) {
+    //       const optimizedOrder = result.routes[0].waypoint_order;
 
-          setOrderedPlacesId([...optimizedOrder.map((index: number) => selectedRoute[index])]);
-        } else {
-          notification.info({
-            message: "Помилка",
-            description: `${status}`,
-          });
-        }
-      }
-    );
+    //       setOrderedPlacesId([...optimizedOrder.map((index: number) => selectedRoute[index])]);
+    //     } else {
+    //       notification.info({
+    //         message: "Помилка",
+    //         description: `${status}`,
+    //       });
+    //     }
+    //   }
+    // );
   };
 
   const geocodeAddress = (
