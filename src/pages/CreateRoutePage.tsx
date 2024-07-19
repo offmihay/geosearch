@@ -7,7 +7,7 @@ import { PlaceSearch } from "../types/typePlaceSearch";
 function CreateRoutePage() {
   const mapRef = useRef<google.maps.Map>();
   const inputRef = useRef<InputRef>(null);
-  const routeRef = useRef<google.maps.DirectionsService | null>(null);
+  // const routeRef = useRef<google.maps.DirectionsService | null>(null);
 
   const [startAddress, setStartAddress] = useState<string>("");
   const [, setIsAddressSelected] = useState<boolean>(false);
@@ -271,20 +271,20 @@ function CreateRoutePage() {
     // );
   };
 
-  const geocodeAddress = (
-    geocoder: google.maps.Geocoder,
-    address: string
-  ): Promise<string | null> => {
-    return new Promise((resolve) => {
-      geocoder.geocode({ address }, (results, status) => {
-        if (status === google.maps.GeocoderStatus.OK && results && results[0]) {
-          resolve(results[0].place_id);
-        } else {
-          resolve(null);
-        }
-      });
-    });
-  };
+  // const geocodeAddress = (
+  //   geocoder: google.maps.Geocoder,
+  //   address: string
+  // ): Promise<string | null> => {
+  //   return new Promise((resolve) => {
+  //     geocoder.geocode({ address }, (results, status) => {
+  //       if (status === google.maps.GeocoderStatus.OK && results && results[0]) {
+  //         resolve(results[0].place_id);
+  //       } else {
+  //         resolve(null);
+  //       }
+  //     });
+  //   });
+  // };
 
   return (
     <>
