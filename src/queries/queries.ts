@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getJson, postJson } from "../api/api";
+import { getJson, patchJson, postJson } from "../api/api";
 import { PlaceSearch } from "../types/typePlaceSearch";
 import { RouteObj } from "../types/typeRoute";
 
@@ -53,7 +53,7 @@ export const useCurrPlaceQuery = (routeId?: string) => {
 export const useDeactivateRouteMutation = () => {
   return useMutation({
     mutationKey: ["deactivate-route"],
-    mutationFn: (routeId: string) => postJson(`routes/${routeId}/deactivate`),
+    mutationFn: (routeId: string) => patchJson(`routes/${routeId}/deactivate`),
     retry: 3,
   });
 };

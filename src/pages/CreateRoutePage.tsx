@@ -7,7 +7,7 @@ import { PlaceSearch } from "../types/typePlaceSearch";
 function CreateRoutePage() {
   const mapRef = useRef<google.maps.Map>();
   const inputRef = useRef<InputRef>(null);
-  // const routeRef = useRef<google.maps.DirectionsService | null>(null);
+  const routeRef = useRef<google.maps.DirectionsService | null>(null);
 
   const [startAddress, setStartAddress] = useState<string>("");
   const [, setIsAddressSelected] = useState<boolean>(false);
@@ -25,12 +25,26 @@ function CreateRoutePage() {
     setIsModalOpen(bool);
   };
 
-  const generateStaticMapUrl = (waypoints: { lat: number; lng: number }[]) => {
-    const apiKey = "AIzaSyAyrW1YUVaMrcTG9a0qMBDQcbYcPKvhGZ4";
+  const toDataURL = (url: string) =>
+    fetch(url)
+      .then((response) => response.blob())
+      .then(
+        (blob) =>
+          new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          })
+      );
+
+  const generateStaticMapUrl = async (waypoints: { lat: number; lng: number }[]) => {
+    const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API;
     const baseUrl = "https://maps.googleapis.com/maps/api/staticmap";
     const size = "600x500";
     const markers = waypoints.map((point) => `markers=${point.lat},${point.lng}`).join("&");
     const url = `${baseUrl}?size=${size}&${markers}&key=${apiKey}`;
+
     return url;
   };
 
@@ -82,10 +96,17 @@ function CreateRoutePage() {
         })
         .filter((point): point is { lat: number; lng: number } => point !== null);
 
-      form.setFieldsValue({
-        places_id_set: orderedPlacesId,
-        img_url: generateStaticMapUrl(waypoints),
-      });
+      await generateStaticMapUrl(waypoints)
+        .then((url) => toDataURL(url))
+        .then((dataUrl) => {
+          form.setFieldsValue({
+            places_id_set: orderedPlacesId,
+            img_url: dataUrl,
+          });
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
       const values = await form.validateFields();
 
       addRouteMutation.mutate(values, {
@@ -217,74 +238,73 @@ function CreateRoutePage() {
   };
 
   const handleGetRoutes = async () => {
-    setOrderedPlacesId(selectedPlacesId);
-    // const selectedRoute = selectedPlacesId;
+    const selectedRoute = selectedPlacesId;
 
-    // if (selectedRoute.length == 0) {
-    //   console.error("Routes not found");
-    //   return;
-    // }
+    if (selectedRoute.length == 0) {
+      console.error("Routes not found");
+      return;
+    }
 
-    // const { DirectionsService } = (await google.maps.importLibrary(
-    //   "routes"
-    // )) as google.maps.RoutesLibrary;
+    const { DirectionsService } = (await google.maps.importLibrary(
+      "routes"
+    )) as google.maps.RoutesLibrary;
 
-    // routeRef.current = new DirectionsService();
-    // const geocoder = new google.maps.Geocoder();
+    routeRef.current = new DirectionsService();
+    const geocoder = new google.maps.Geocoder();
 
-    // // Geocode start address
-    // const startPlaceId = await geocodeAddress(geocoder, startAddress);
+    // Geocode start address
+    const startPlaceId = await geocodeAddress(geocoder, startAddress);
 
-    // if (!startPlaceId) {
-    //   notification.warning({
-    //     message: "Помилка",
-    //     description: `Перевірте чи правильно ви заповнили дані`,
-    //   });
-    //   return;
-    // }
+    if (!startPlaceId) {
+      notification.warning({
+        message: "Помилка",
+        description: `Перевірте чи правильно ви заповнили дані`,
+      });
+      return;
+    }
 
-    // const waypoints = selectedRoute.map((placeId) => ({
-    //   location: { placeId },
-    //   stopover: true,
-    // }));
+    const waypoints = selectedRoute.map((placeId) => ({
+      location: { placeId },
+      stopover: true,
+    }));
 
-    // routeRef.current.route(
-    //   {
-    //     origin: { placeId: startPlaceId },
-    //     destination: { placeId: startPlaceId },
-    //     waypoints,
-    //     optimizeWaypoints: true,
-    //     travelMode: google.maps.TravelMode.WALKING,
-    //   },
-    //   (result: google.maps.DirectionsResult | null, status: google.maps.DirectionsStatus) => {
-    //     if (status === google.maps.DirectionsStatus.OK && result) {
-    //       const optimizedOrder = result.routes[0].waypoint_order;
+    routeRef.current.route(
+      {
+        origin: { placeId: startPlaceId },
+        destination: { placeId: startPlaceId },
+        waypoints,
+        optimizeWaypoints: true,
+        travelMode: google.maps.TravelMode.WALKING,
+      },
+      (result: google.maps.DirectionsResult | null, status: google.maps.DirectionsStatus) => {
+        if (status === google.maps.DirectionsStatus.OK && result) {
+          const optimizedOrder = result.routes[0].waypoint_order;
 
-    //       setOrderedPlacesId([...optimizedOrder.map((index: number) => selectedRoute[index])]);
-    //     } else {
-    //       notification.info({
-    //         message: "Помилка",
-    //         description: `${status}`,
-    //       });
-    //     }
-    //   }
-    // );
+          setOrderedPlacesId([...optimizedOrder.map((index: number) => selectedRoute[index])]);
+        } else {
+          notification.info({
+            message: "Помилка",
+            description: `${status}`,
+          });
+        }
+      }
+    );
   };
 
-  // const geocodeAddress = (
-  //   geocoder: google.maps.Geocoder,
-  //   address: string
-  // ): Promise<string | null> => {
-  //   return new Promise((resolve) => {
-  //     geocoder.geocode({ address }, (results, status) => {
-  //       if (status === google.maps.GeocoderStatus.OK && results && results[0]) {
-  //         resolve(results[0].place_id);
-  //       } else {
-  //         resolve(null);
-  //       }
-  //     });
-  //   });
-  // };
+  const geocodeAddress = (
+    geocoder: google.maps.Geocoder,
+    address: string
+  ): Promise<string | null> => {
+    return new Promise((resolve) => {
+      geocoder.geocode({ address }, (results, status) => {
+        if (status === google.maps.GeocoderStatus.OK && results && results[0]) {
+          resolve(results[0].place_id);
+        } else {
+          resolve(null);
+        }
+      });
+    });
+  };
 
   return (
     <>
