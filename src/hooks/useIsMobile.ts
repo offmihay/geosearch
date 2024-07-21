@@ -9,7 +9,6 @@ const useIsMobile = () => {
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
-    // Call handleResize initially to set the correct state on mount
     handleResize();
 
     return () => {
