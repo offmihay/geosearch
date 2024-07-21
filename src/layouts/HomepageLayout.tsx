@@ -9,6 +9,7 @@ import CreateRoutePage from "../pages/CreateRoutePage";
 import RoutesListPage from "../pages/RoutesListPage";
 import RouteInfoPage from "../pages/RouteInfoPage";
 import FindPlacesPage from "../pages/FindPlacesPage";
+import MazdaPage from "../pages/MazdaPage";
 
 const { Content } = Layout;
 
@@ -42,6 +43,7 @@ const HomepageLayout = () => {
             <Route path="/routes" element={<RoutesListPage />} />
             <Route path="/routes/:id" element={<RouteInfoPage />} />
             <Route path="find-places" element={<FindPlacesPage />} />
+            <Route path="mazda" element={<MazdaPage />} />
           </Routes>
         </Content>
       </Layout>

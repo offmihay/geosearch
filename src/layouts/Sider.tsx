@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FormOutlined, CompassOutlined, CloseOutlined } from "@ant-design/icons";
+import { FormOutlined, CompassOutlined, CloseOutlined, CarOutlined } from "@ant-design/icons";
 import { Layout, Menu, MenuProps, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import useIsMobile from "../hooks/useIsMobile";
@@ -54,6 +54,14 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
       label: "Знайти точки",
       onClick: () => {
         handleSetActiveMenu("find-places");
+      },
+    },
+    {
+      key: "mazda",
+      icon: React.createElement(CarOutlined),
+      label: "mazda cx-5",
+      onClick: () => {
+        handleSetActiveMenu("mazda");
       },
     },
   ];
