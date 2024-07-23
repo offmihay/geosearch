@@ -1,10 +1,10 @@
 import { Button, Card, Form, Input, Progress, Select, notification } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { useAddPlacesMutation } from "../queries/queries";
 import { RocketOutlined, PlayCircleOutlined, CloseOutlined } from "@ant-design/icons";
 import * as turf from "@turf/turf";
 import { Feature, Polygon, GeoJsonProperties } from "geojson";
-import { PlaceSearch } from "../types/typePlaceSearch";
+import { PlaceSearch } from "../types/PlaceSearch.type";
+import { useAddPlacesMutation } from "../queries/place.query";
 
 const regions = [
   "Cherkasy",
@@ -173,6 +173,7 @@ function FindPlacesPage() {
                 city: cityName,
                 national_phone_number: place.nationalPhoneNumber,
                 display_name: place.displayName,
+                region: region,
               };
               placesCollected.push(placeObj);
               console.log(placeObj);

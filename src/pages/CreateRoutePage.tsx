@@ -1,8 +1,9 @@
 import { Button, Card, Form, Input, InputRef, Modal, Spin, notification } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { SaveOutlined } from "@ant-design/icons";
-import { useAddRouteMutation, usePlacesQuery } from "../queries/queries";
-import { PlaceSearch } from "../types/typePlaceSearch";
+import { PlaceSearch } from "../types/PlaceSearch.type";
+import { usePlacesQuery } from "../queries/place.query";
+import { useAddRouteMutation } from "../queries/route.query";
 
 function CreateRoutePage() {
   const mapRef = useRef<google.maps.Map>();

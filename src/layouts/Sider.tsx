@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { FormOutlined, CompassOutlined, CloseOutlined, CarOutlined } from "@ant-design/icons";
+import {
+  FormOutlined,
+  CompassOutlined,
+  CloseOutlined,
+  CarOutlined,
+  LogoutOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 import { Layout, Menu, MenuProps, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import useIsMobile from "../hooks/useIsMobile";
+import { useAuth } from "../hooks/useAuth";
 
 export interface Props {
   isCollapsed: boolean;
@@ -13,6 +21,8 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
   const { Sider } = Layout;
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+
+  const auth = useAuth();
 
   const [activeKey, setActiveKey] = useState<string>(
     localStorage.getItem("siderMenuActive") || "create-route"
@@ -115,6 +125,12 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
           items={siderMenuData}
           selectedKeys={[activeKey]}
         />
+        <div className="absolute bottom-0 left-0 right-0 w-full flex justify-between gap-2 p-4">
+          {!isMobile ? <Button size="large" icon={<SettingOutlined />}></Button> : <div></div>}
+          {!isCollapsed && (
+            <Button size="large" onClick={auth?.logOut} icon={<LogoutOutlined />}></Button>
+          )}
+        </div>
       </Sider>
     </>
   );

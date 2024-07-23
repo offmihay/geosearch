@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
-import { useCurrPlaceQuery, useUpdatePlaceStatusMutation } from "../queries/queries";
 import { Button, Card, Popconfirm, Select, Spin, notification } from "antd";
-import { PlaceSearch } from "../types/typePlaceSearch";
+import { PlaceSearch } from "../types/PlaceSearch.type";
 import {
   CloudUploadOutlined,
   GoogleOutlined,
@@ -9,6 +8,8 @@ import {
   SolutionOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
+import { useUpdatePlaceStatusMutation } from "../queries/place.query";
+import { useCurrPlaceQuery } from "../queries/route.query";
 
 const RouteInfoPage = () => {
   const { id } = useParams();

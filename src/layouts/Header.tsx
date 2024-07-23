@@ -1,6 +1,6 @@
 import { Button, Layout } from "antd";
 
-import { MenuOutlined } from "@ant-design/icons";
+import { MenuOutlined, SettingOutlined } from "@ant-design/icons";
 import useIsMobile from "../hooks/useIsMobile";
 
 export interface HeaderProps {
@@ -27,19 +27,20 @@ const Header = ({ setIsCollapsed }: HeaderProps) => {
       }}
     >
       {isMobile && (
-        <Button
-          type="text"
-          icon={<MenuOutlined />}
-          onClick={setIsCollapsed}
-          style={{
-            fontSize: "16px",
-            width: 48,
-            height: 48,
-          }}
-        />
+        <>
+          <Button
+            type="text"
+            icon={<MenuOutlined />}
+            onClick={setIsCollapsed}
+            style={{
+              fontSize: "16px",
+              width: 48,
+              height: 48,
+            }}
+          />
+          <Button size="large" type="text" icon={<SettingOutlined />}></Button>
+        </>
       )}
-      <div></div>
-      <div></div>
     </Header>
   );
 };

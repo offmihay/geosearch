@@ -1,33 +1,27 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getJson, patchJson, postJson } from "../api/api";
-import { PlaceSearch } from "../types/typePlaceSearch";
-import { RouteObj } from "../types/typeRoute";
+import { PlaceSearch } from "../types/PlaceSearch.type";
+import { RouteObj } from "../types/RouteObj.type";
 
-export const usePlacesQuery = () => {
-  return useQuery({
-    queryKey: ["places"],
-    queryFn: (): Promise<PlaceSearch[]> => getJson("places"),
-    initialData: [],
-    refetchOnWindowFocus: false,
-    retry: 0,
-  });
-};
-
-export const useAddPlacesMutation = () => {
-  return useMutation({
-    mutationKey: ["add-places"],
-    mutationFn: (values: PlaceSearch[]) => postJson("places", values),
-    retry: 3,
-  });
-};
-
-export const useRoutesQuery = () => {
+export const useRoutesQuery = (checkedAll: boolean) => {
   return useQuery({
     queryKey: ["routes"],
     queryFn: (): Promise<RouteObj[]> => getJson("routes"),
     initialData: [],
     refetchOnWindowFocus: false,
     retry: 0,
+    enabled: !checkedAll,
+  });
+};
+
+export const useAllRoutesQuery = (checkedAll: boolean) => {
+  return useQuery({
+    queryKey: ["all-routes"],
+    queryFn: (): Promise<RouteObj[]> => getJson("routes/all"),
+    initialData: [],
+    refetchOnWindowFocus: false,
+    retry: 0,
+    enabled: checkedAll,
   });
 };
 
@@ -54,15 +48,6 @@ export const useDeactivateRouteMutation = () => {
   return useMutation({
     mutationKey: ["deactivate-route"],
     mutationFn: (routeId: string) => patchJson(`routes/${routeId}/deactivate`),
-    retry: 3,
-  });
-};
-
-export const useUpdatePlaceStatusMutation = () => {
-  return useMutation({
-    mutationKey: ["update-place-status"],
-    mutationFn: (values: { place_id: string; place_status: PlaceSearch["place_status"] }) =>
-      postJson("places/update-status", values),
     retry: 3,
   });
 };

@@ -1,4 +1,4 @@
-export interface PlaceSearch {
+export type PlaceSearch = {
   place_id: string;
   lat: number;
   lng: number;
@@ -10,4 +10,4 @@ export interface PlaceSearch {
   display_name?: string | null;
   place_status?: "DONE" | "IN_PROGRESS" | "TO_DO" | "NOT_EXIST";
   created_at?: Date;
-}
+};
