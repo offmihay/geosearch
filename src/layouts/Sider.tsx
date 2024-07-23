@@ -37,7 +37,7 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
   const handleSetActiveMenu = (key: string) => {
     setActiveKey(key);
     localStorage.setItem("siderMenuActive", key);
-
+    setIsCollapsed();
     navigate(key);
   };
 
