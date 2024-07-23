@@ -93,7 +93,6 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
         collapsedWidth="0"
         collapsible
         collapsed={isMobile ? isCollapsed : false}
-        onClick={setIsCollapsed}
       >
         <div className="absolute top-0 w-full pl-8 pt-8">
           <a onClick={() => handleSetActiveMenu("reate-route")}>
