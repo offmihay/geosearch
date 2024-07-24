@@ -11,6 +11,7 @@ import { Layout, Menu, MenuProps, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import useIsMobile from "../hooks/useIsMobile";
 import { useAuth } from "../hooks/useAuth";
+import { useModal } from "../hooks/useModal";
 
 export interface Props {
   isCollapsed: boolean;
@@ -22,6 +23,7 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
 
+  const modal = useModal();
   const auth = useAuth();
 
   const [activeKey, setActiveKey] = useState<string>(
@@ -37,7 +39,6 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
   const handleSetActiveMenu = (key: string) => {
     setActiveKey(key);
     localStorage.setItem("siderMenuActive", key);
-    setIsCollapsed();
     navigate(key);
   };
 
@@ -48,6 +49,7 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
       label: "Створити маршрут ",
       onClick: () => {
         handleSetActiveMenu("create-route");
+        setIsCollapsed();
       },
     },
     {
@@ -56,6 +58,7 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
       label: "Працювати",
       onClick: () => {
         handleSetActiveMenu("routes");
+        setIsCollapsed();
       },
     },
     {
@@ -64,6 +67,7 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
       label: "Знайти точки",
       onClick: () => {
         handleSetActiveMenu("find-places");
+        setIsCollapsed();
       },
     },
     {
@@ -72,6 +76,7 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
       label: "mazda cx-5",
       onClick: () => {
         handleSetActiveMenu("mazda");
+        setIsCollapsed();
       },
     },
   ];
@@ -125,8 +130,19 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
           selectedKeys={[activeKey]}
         />
         <div className="absolute bottom-0 left-0 right-0 w-full flex justify-between gap-2 p-4">
-          {!isMobile ? <Button size="large" icon={<SettingOutlined />}></Button> : <div></div>}
-          {!isCollapsed && (
+          {!isMobile ? (
+            <Button
+              size="large"
+              icon={<SettingOutlined />}
+              onClick={() => modal?.open("settings")}
+            ></Button>
+          ) : (
+            <div></div>
+          )}
+          {!isCollapsed && isMobile && (
+            <Button size="large" onClick={auth?.logOut} icon={<LogoutOutlined />}></Button>
+          )}
+          {!isMobile && (
             <Button size="large" onClick={auth?.logOut} icon={<LogoutOutlined />}></Button>
           )}
         </div>

@@ -1,28 +1,18 @@
 import RouteCard from "../components/RouteCard";
 import { RouteObj } from "../types/RouteObj.type";
 import { useNavigate } from "react-router-dom";
-import { notification, Spin, Switch } from "antd";
-import {
-  useRoutesQuery,
-  useDeactivateRouteMutation,
-  useAllRoutesQuery,
-} from "../queries/route.query";
+import { notification, Spin } from "antd";
+import { useRoutesQuery, useDeactivateRouteMutation } from "../queries/route.query";
 import { useEffect, useState } from "react";
 
 function RoutesListPage() {
   const [routesData, setRoutesData] = useState<RouteObj[]>([]);
-  const [checked, setChecked] = useState(false);
 
-  const onChange = (checked: boolean) => {
-    setChecked(checked);
-  };
-
-  const routesQuery = useRoutesQuery(checked);
-  const allRoutesQuery = useAllRoutesQuery(checked);
+  const routesQuery = useRoutesQuery();
 
   useEffect(() => {
-    setRoutesData(checked ? allRoutesQuery.data : routesQuery.data);
-  }, [checked, routesQuery.fetchStatus, allRoutesQuery.fetchStatus]);
+    setRoutesData(routesQuery.data);
+  }, [routesQuery.fetchStatus]);
 
   const deactivateRouteMutation = useDeactivateRouteMutation();
   localStorage.setItem("suffixLink", "");
@@ -50,12 +40,7 @@ function RoutesListPage() {
 
   return (
     <>
-      <Switch
-        checked={checked}
-        onChange={onChange}
-        className="absolute top-[-30px] right-[60px] z-50"
-      />
-      <Spin fullscreen={true} spinning={allRoutesQuery.isFetching || routesQuery.isFetching}>
+      <Spin fullscreen={true} spinning={routesQuery.isFetching}>
         {" "}
       </Spin>
       <div className="m-4">

@@ -3,25 +3,13 @@ import { getJson, patchJson, postJson } from "../api/api";
 import { PlaceSearch } from "../types/PlaceSearch.type";
 import { RouteObj } from "../types/RouteObj.type";
 
-export const useRoutesQuery = (checkedAll: boolean) => {
+export const useRoutesQuery = () => {
   return useQuery({
     queryKey: ["routes"],
     queryFn: (): Promise<RouteObj[]> => getJson("routes"),
     initialData: [],
     refetchOnWindowFocus: false,
     retry: 0,
-    enabled: !checkedAll,
-  });
-};
-
-export const useAllRoutesQuery = (checkedAll: boolean) => {
-  return useQuery({
-    queryKey: ["all-routes"],
-    queryFn: (): Promise<RouteObj[]> => getJson("routes/all"),
-    initialData: [],
-    refetchOnWindowFocus: false,
-    retry: 0,
-    enabled: checkedAll,
   });
 };
 

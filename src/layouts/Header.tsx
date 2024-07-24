@@ -2,6 +2,7 @@ import { Button, Layout } from "antd";
 
 import { MenuOutlined, SettingOutlined } from "@ant-design/icons";
 import useIsMobile from "../hooks/useIsMobile";
+import { useModal } from "../hooks/useModal";
 
 export interface HeaderProps {
   setIsCollapsed: () => void;
@@ -9,6 +10,7 @@ export interface HeaderProps {
 
 const Header = ({ setIsCollapsed }: HeaderProps) => {
   const { Header } = Layout;
+  const modal = useModal();
 
   const isMobile = useIsMobile();
 
@@ -38,7 +40,12 @@ const Header = ({ setIsCollapsed }: HeaderProps) => {
               height: 48,
             }}
           />
-          <Button size="large" type="text" icon={<SettingOutlined />}></Button>
+          <Button
+            size="large"
+            type="text"
+            icon={<SettingOutlined />}
+            onClick={() => modal?.open("settings")}
+          ></Button>
         </>
       )}
     </Header>
