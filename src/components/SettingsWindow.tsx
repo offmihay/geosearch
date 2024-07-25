@@ -1,82 +1,117 @@
-import { Form, Modal, notification, Select, Switch } from "antd";
+import { Divider, Form, Modal, notification, Select, Spin, Switch } from "antd";
 import { useModal } from "../hooks/useModal";
-import { useUserPreferencesMutation, useUserPreferencesQuery } from "../queries/user.query";
+import {
+  useAdminPreferencesMutation,
+  useAdminPreferencesQuery,
+  useUserPreferencesMutation,
+  useUserPreferencesQuery,
+} from "../queries/user.query";
 import { useEffect } from "react";
 
 const SettingsWindow = () => {
   const modal = useModal();
   if (modal?.active != "settings") return null;
 
-  const [form] = Form.useForm();
+  const [formUser] = Form.useForm();
+  const [formAdmin] = Form.useForm();
 
   const userPreferencesQuery = useUserPreferencesQuery();
   const userPreferencesMutation = useUserPreferencesMutation();
 
+  const adminPreferencesQuery = useAdminPreferencesQuery();
+  const adminPreferencesMutation = useAdminPreferencesMutation();
+
   const handleSave = async () => {
-    const values = await form.validateFields();
-    userPreferencesMutation.mutate(
-      { preferences: values },
-      {
-        onSuccess: () => {
-          notification.success({
-            message: "Успішно",
-            description: "Налаштування успішно змінено!",
-          });
-          window.location.reload();
-          modal.close();
-        },
-        onError: () => {
-          notification.error({
-            message: "Помилка",
-            description: "Сталась помилка при зміні данних!",
-          });
-        },
-      }
-    );
+    const valuesUser = await formUser.validateFields();
+    const valuesAdmin = await formAdmin.validateFields();
+
+    userPreferencesMutation.mutate({ preferences: valuesUser });
+
+    adminPreferencesQuery.isSuccess &&
+      adminPreferencesMutation.mutate({ preferences: valuesAdmin });
   };
 
   useEffect(() => {
-    form.setFieldsValue({
-      regions: userPreferencesQuery.data?.preferences.regions,
-      show_all_routes: userPreferencesQuery.data?.preferences.show_all_routes,
+    formUser.setFieldsValue({
+      regions: userPreferencesQuery.data?.preferences.regions || [],
+      show_done_places: userPreferencesQuery.data?.preferences.show_done_places || false,
+    });
+    formAdmin.setFieldsValue({
+      show_all_routes: adminPreferencesQuery.data?.preferences.show_all_routes || false,
     });
   }, [userPreferencesQuery.fetchStatus]);
 
+  useEffect(() => {
+    if (
+      userPreferencesMutation.isSuccess &&
+      (adminPreferencesQuery.isSuccess ? adminPreferencesMutation.isSuccess : true)
+    ) {
+      notification.success({
+        message: "Успішно",
+        description: "Налаштування успішно змінено!",
+      });
+      modal.close();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
+  }, [userPreferencesMutation.status, adminPreferencesMutation.status]);
+
   return (
     <>
-      <Modal
-        title="Налаштування"
-        onCancel={modal.close}
-        onOk={handleSave}
-        zIndex={100}
-        centered
-        width={1000}
-        open={true}
-      >
-        <Form form={form} labelCol={{ span: 8 }} wrapperCol={{ span: 14 }} layout="horizontal">
-          <Form.Item label="Регіони" name="regions">
-            <Select
-              mode="multiple"
-              style={{ width: "100%" }}
-              placeholder="Please select"
-              options={
-                userPreferencesQuery.data?.preferences_possibleValues.regions &&
-                userPreferencesQuery.data?.preferences_possibleValues.regions.length > 0
-                  ? userPreferencesQuery.data?.preferences_possibleValues.regions.map(
-                      (item: string) => ({
-                        label: item,
-                        value: item,
-                      })
-                    )
-                  : []
-              }
-            />
-          </Form.Item>
-          <Form.Item label="Показувати всі маршрути" name="show_all_routes">
-            <Switch />
-          </Form.Item>
-        </Form>
-      </Modal>
+      <Spin spinning={adminPreferencesQuery.isFetching || userPreferencesQuery.isFetching}>
+        <Modal
+          title="Налаштування"
+          onCancel={modal.close}
+          onOk={handleSave}
+          zIndex={100}
+          centered
+          width={1000}
+          open={true}
+        >
+          <Form
+            form={formUser}
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 14 }}
+            layout="horizontal"
+          >
+            <Form.Item label="Регіони на карті" name="regions">
+              <Select
+                mode="multiple"
+                style={{ width: "100%" }}
+                placeholder="Please select"
+                options={
+                  userPreferencesQuery.data?.preferences_possibleValues?.regions &&
+                  userPreferencesQuery.data?.preferences_possibleValues.regions.length > 0
+                    ? userPreferencesQuery.data?.preferences_possibleValues.regions.map(
+                        (item: string) => ({
+                          label: item,
+                          value: item,
+                        })
+                      )
+                    : []
+                }
+              />
+            </Form.Item>
+            <Form.Item label="Показувати на карті зроблені точки" name="show_done_places">
+              <Switch />
+            </Form.Item>
+          </Form>
+          <Divider />
+          {adminPreferencesQuery.isSuccess && (
+            <Form
+              form={formAdmin}
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 14 }}
+              layout="horizontal"
+            >
+              <Form.Item label="Показувати маршрути всіх користувачів" name="show_all_routes">
+                <Switch />
+              </Form.Item>
+            </Form>
+          )}
+        </Modal>
+      </Spin>
     </>
   );
 };

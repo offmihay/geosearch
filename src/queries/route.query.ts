@@ -9,7 +9,7 @@ export const useRoutesQuery = () => {
     queryFn: (): Promise<RouteObj[]> => getJson("routes"),
     initialData: [],
     refetchOnWindowFocus: false,
-    retry: 0,
+    retry: 1,
   });
 };
 
@@ -17,7 +17,7 @@ export const useAddRouteMutation = () => {
   return useMutation({
     mutationKey: ["add-route"],
     mutationFn: (values: RouteObj) => postJson("routes", values),
-    retry: 3,
+    retry: 1,
   });
 };
 
@@ -27,7 +27,7 @@ export const useCurrPlaceQuery = (routeId?: string) => {
     queryFn: (): Promise<{ isEmpty: boolean; place?: PlaceSearch }> =>
       getJson(`routes/${routeId}/curr-place`),
     refetchOnWindowFocus: false,
-    retry: 0,
+    retry: 1,
     enabled: !!routeId,
   });
 };
@@ -36,6 +36,6 @@ export const useDeactivateRouteMutation = () => {
   return useMutation({
     mutationKey: ["deactivate-route"],
     mutationFn: (routeId: string) => patchJson(`routes/${routeId}/deactivate`),
-    retry: 3,
+    retry: 1,
   });
 };

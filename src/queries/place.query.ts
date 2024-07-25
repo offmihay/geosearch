@@ -8,7 +8,7 @@ export const usePlacesQuery = () => {
     queryFn: (): Promise<PlaceSearch[]> => getJson("places"),
     initialData: [],
     refetchOnWindowFocus: false,
-    retry: 0,
+    retry: 1,
   });
 };
 
@@ -16,7 +16,7 @@ export const useAddPlacesMutation = () => {
   return useMutation({
     mutationKey: ["add-places"],
     mutationFn: (values: PlaceSearch[]) => postJson("places", values),
-    retry: 3,
+    retry: 1,
   });
 };
 
@@ -25,6 +25,6 @@ export const useUpdatePlaceStatusMutation = () => {
     mutationKey: ["update-place-status"],
     mutationFn: (values: { place_id: string; place_status: PlaceSearch["place_status"] }) =>
       postJson("places/update-status", values),
-    retry: 3,
+    retry: 1,
   });
 };

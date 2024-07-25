@@ -6,6 +6,6 @@ export const useLoginMutation = () => {
   return useMutation({
     mutationKey: [`login`],
     mutationFn: (loginDto: LoginField) => postJson("auth/login", loginDto),
-    retry: 0,
+    retry: 1,
   });
 };

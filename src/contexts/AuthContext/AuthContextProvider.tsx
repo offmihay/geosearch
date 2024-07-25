@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { LoginField } from "../../types/LoginField.type";
-import { useLoginMutation } from "../../queries/login.query";
+import { useLoginMutation } from "../../queries/auth.query";
 import { useNavigate, useLocation } from "react-router-dom";
 import { notification } from "antd";
 import AuthContext from "./AuthContext";
+import { useAdminAccessQuery } from "../../queries/user.query";
 
 interface AuthContextProviderProps {
   children: React.ReactNode;
@@ -23,12 +24,14 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   }, [token, location.pathname]);
 
   const loginMutation = useLoginMutation();
+  const adminAccessQuery = useAdminAccessQuery();
 
   const login = async (userData: LoginField) => {
     loginMutation.mutate(userData, {
       onSuccess: (response: { token: string }) => {
         setToken(response.token);
         localStorage.setItem("token", response.token);
+        adminAccessQuery.refetch();
         navigate("");
       },
       onError: (error) => {

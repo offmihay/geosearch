@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import useIsMobile from "../hooks/useIsMobile";
 import { useAuth } from "../hooks/useAuth";
 import { useModal } from "../hooks/useModal";
+import { useAdminAccessQuery } from "../queries/user.query";
 
 export interface Props {
   isCollapsed: boolean;
@@ -22,6 +23,11 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
   const { Sider } = Layout;
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+
+  const adminAccessQuery = useAdminAccessQuery();
+  useEffect(() => {
+    adminAccessQuery.refetch();
+  }, []);
 
   const modal = useModal();
   const auth = useAuth();
@@ -61,24 +67,28 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
         setIsCollapsed();
       },
     },
-    {
-      key: "find-places",
-      icon: React.createElement(CompassOutlined),
-      label: "Знайти точки",
-      onClick: () => {
-        handleSetActiveMenu("find-places");
-        setIsCollapsed();
-      },
-    },
-    {
-      key: "mazda",
-      icon: React.createElement(CarOutlined),
-      label: "mazda cx-5",
-      onClick: () => {
-        handleSetActiveMenu("mazda");
-        setIsCollapsed();
-      },
-    },
+    adminAccessQuery.isSuccess
+      ? {
+          key: "find-places",
+          icon: React.createElement(CompassOutlined),
+          label: "Знайти точки",
+          onClick: () => {
+            handleSetActiveMenu("find-places");
+            setIsCollapsed();
+          },
+        }
+      : null,
+    adminAccessQuery.isSuccess
+      ? {
+          key: "mazda",
+          icon: React.createElement(CarOutlined),
+          label: "mazda cx-5",
+          onClick: () => {
+            handleSetActiveMenu("mazda");
+            setIsCollapsed();
+          },
+        }
+      : null,
   ];
 
   return (
