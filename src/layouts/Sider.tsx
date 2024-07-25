@@ -89,6 +89,17 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
           },
         }
       : null,
+      adminAccessQuery.isSuccess
+      ? {
+          key: "hondacivic2004",
+          icon: React.createElement(CarOutlined),
+          label: "honda civic????????? 2004 sigma",
+          onClick: () => {
+            handleSetActiveMenu("hondacivic2004");
+            setIsCollapsed();
+          },
+        }
+      : null,
   ];
 
   return (

@@ -11,6 +11,7 @@ import RouteInfoPage from "../pages/RouteInfoPage";
 import FindPlacesPage from "../pages/FindPlacesPage";
 import MazdaPage from "../pages/MazdaPage";
 import SettingsWindow from "../components/SettingsWindow";
+import HondaPage from "../pages/HondaPage";
 
 const { Content } = Layout;
 
@@ -46,6 +47,7 @@ const HomepageLayout = () => {
               <Route path="/routes/:id" element={<RouteInfoPage />} />
               <Route path="find-places" element={<FindPlacesPage />} />
               <Route path="mazda" element={<MazdaPage />} />
+              <Route path="hondacivic2004" element={<HondaPage />} />
             </Routes>
           </Content>
         </Layout>
