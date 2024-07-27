@@ -1,4 +1,4 @@
-import { AdminPreferencesType, UserPreferencesType } from "./preferences.type";
+import { UserPreferencesType, AdminPreferencesType } from "./preferences.type";
 
 export type UserPreferencesDtoType = {
   preferences: UserPreferencesType;

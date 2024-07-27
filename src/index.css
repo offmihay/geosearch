@@ -23,3 +23,13 @@ img {
     pointer-events: none;
     user-select: none;
   }
+
+
+  
+/* @media screen and (max-width: 1000px) {
+    .ant-table-wrapper {
+        max-width: unset;
+        width: 900px;
+    }
+  
+} */

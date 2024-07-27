@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { Button, Card, Popconfirm, Select, Spin, notification } from "antd";
-import { PlaceSearch } from "../types/PlaceSearch.type";
+import { PlaceSearch, PlaceStatus } from "../types/PlaceSearch.type";
 import {
   CloudUploadOutlined,
   GoogleOutlined,
@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import { useUpdatePlaceStatusMutation } from "../queries/place.query";
 import { useCurrPlaceQuery } from "../queries/route.query";
+import { placeStatusLabel } from "../components/StatisticsTable";
 
 const RouteInfoPage = () => {
   const { id } = useParams();
@@ -19,12 +20,7 @@ const RouteInfoPage = () => {
 
   const updatePlaceStatusMutation = useUpdatePlaceStatusMutation();
 
-  const statusOptions = [
-    { value: "DONE", label: "Зроблено" },
-    { value: "NOT_EXIST", label: "Відхилено" },
-  ];
-
-  const [status, setStatus] = useState<PlaceSearch["place_status"]>("DONE");
+  const [status, setStatus] = useState<PlaceStatus>(PlaceStatus.DONE);
 
   const formUrl = (params: { [key: string]: any }) => {
     const url = new URL(
@@ -52,7 +48,7 @@ const RouteInfoPage = () => {
           description: "Місце зроблено",
           placement: "bottom",
         });
-        setStatus("DONE");
+        setStatus(PlaceStatus.DONE);
         currPlaceQuery.refetch();
       },
       onError: (error) => {
@@ -104,12 +100,15 @@ const RouteInfoPage = () => {
                   value={status}
                   style={{ width: 300, height: 50 }}
                   placeholder="Please select"
-                  options={statusOptions}
+                  options={placeStatusLabel.filter((status) =>
+                    [PlaceStatus.DONE, PlaceStatus.NOT_EXIST, PlaceStatus.SKIP].includes(
+                      status.value
+                    )
+                  )}
                   onChange={setStatus}
                 />
                 <Popconfirm
                   title="Відправити?"
-                  description="yes ?"
                   icon={<QuestionCircleOutlined style={{ color: "red" }} />}
                   onConfirm={() => {
                     if (placeCurr?.place_id) {
@@ -124,8 +123,8 @@ const RouteInfoPage = () => {
                   onPopupClick={(event) => {
                     event.stopPropagation();
                   }}
-                  okText="da"
-                  cancelText="ніт"
+                  okText="Так"
+                  cancelText="Ні"
                   okButtonProps={{ className: "w-[60px] h-[30px]" }}
                   cancelButtonProps={{ className: "w-[60px] h-[30px]" }}
                   overlayClassName="w-[300px]"

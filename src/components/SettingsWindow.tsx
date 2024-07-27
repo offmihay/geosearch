@@ -32,14 +32,17 @@ const SettingsWindow = () => {
   };
 
   useEffect(() => {
-    formUser.setFieldsValue({
-      regions: userPreferencesQuery.data?.preferences.regions || [],
-      show_done_places: userPreferencesQuery.data?.preferences.show_done_places || false,
-    });
-    formAdmin.setFieldsValue({
-      show_all_routes: adminPreferencesQuery.data?.preferences.show_all_routes || false,
-    });
-  }, [userPreferencesQuery.fetchStatus]);
+    if (userPreferencesQuery.isSuccess && adminPreferencesQuery.isSuccess) {
+      formUser.setFieldsValue({
+        regions: userPreferencesQuery.data.preferences.regions || [],
+        show_done_places: userPreferencesQuery.data.preferences.show_done_places || false,
+      });
+      formAdmin.setFieldsValue({
+        show_all_routes: adminPreferencesQuery.data.preferences.show_all_routes || false,
+        show_all_places: adminPreferencesQuery.data.preferences.show_all_places || false,
+      });
+    }
+  }, [userPreferencesQuery.fetchStatus, adminPreferencesQuery.fetchStatus]);
 
   useEffect(() => {
     if (
@@ -106,6 +109,9 @@ const SettingsWindow = () => {
               layout="horizontal"
             >
               <Form.Item label="Показувати маршрути всіх користувачів" name="show_all_routes">
+                <Switch />
+              </Form.Item>
+              <Form.Item label="Показувати місця всіх користувачів" name="show_all_places">
                 <Switch />
               </Form.Item>
             </Form>

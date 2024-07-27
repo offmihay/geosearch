@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Card, Popconfirm, Progress } from "antd";
-import { DeleteOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import { DeleteOutlined, MinusCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 interface LogoCardProps {
   percentage?: string;
@@ -9,6 +9,7 @@ interface LogoCardProps {
   img_url: string;
   handleOpenCard: () => void;
   onDelete: () => void;
+  onDeactivate: () => void;
   countRoute: number;
   is_active: boolean;
   routes_done: number;
@@ -21,13 +22,14 @@ const RouteCard: React.FC<LogoCardProps> = ({
   handleOpenCard,
   img_url,
   onDelete,
+  onDeactivate,
   countRoute,
   is_active,
   routes_done,
 }) => {
   return (
     <Card
-      className={`max-w-[350px] w-full relative ${!is_active ? "bg-black/30" : ""}`}
+      className={`max-w-[355px] w-full relative ${!is_active ? "bg-black/30" : ""}`}
       hoverable
       onClick={() => is_active && handleOpenCard()}
     >
@@ -36,7 +38,7 @@ const RouteCard: React.FC<LogoCardProps> = ({
         <p className="font-bold text-[20px]">{`${routes_done}/${countRoute}`}</p>
         <p className="font-normal text-[16px]">{date}</p>
       </div>
-      <div className="w-full h-[350px] flex justify-center items-center flex-col gap-4 ">
+      <div className="w-full h-[400px] flex justify-center items-center flex-col gap-4 ">
         <div className="relative">
           <img src={img_url} className="w-full h-full rounded-2xl" alt="" />
           {!is_active && (
@@ -56,10 +58,10 @@ const RouteCard: React.FC<LogoCardProps> = ({
         </div>
         <Progress percent={Number(percentage)} />
         <Popconfirm
-          title="Примусово закінчити маршрут"
+          title="Примусово завершити маршрут"
           description="Всі незроблені точки стануть активними на карті."
           icon={<QuestionCircleOutlined style={{ color: "red" }} />}
-          onConfirm={onDelete}
+          onConfirm={onDeactivate}
           onPopupClick={(event) => {
             event.stopPropagation();
           }}
@@ -73,9 +75,32 @@ const RouteCard: React.FC<LogoCardProps> = ({
             onClick={(event) => {
               event.stopPropagation();
             }}
+            icon={<MinusCircleOutlined />}
+          >
+            Деактивувати маршрут
+          </Button>
+        </Popconfirm>
+        <Popconfirm
+          title="Примусово видалити маршрут"
+          description="Всі незроблені точки стануть активними на карті."
+          icon={<QuestionCircleOutlined style={{ color: "red" }} />}
+          onConfirm={onDelete}
+          onPopupClick={(event) => {
+            event.stopPropagation();
+          }}
+          okText="Так"
+          cancelText="Скасувати"
+          overlayClassName="w-[300px]"
+        >
+          <Button
+            danger
+            type="primary"
+            onClick={(event) => {
+              event.stopPropagation();
+            }}
             icon={<DeleteOutlined />}
           >
-            Закінчити маршрут
+            Видалити маршрут
           </Button>
         </Popconfirm>
       </div>

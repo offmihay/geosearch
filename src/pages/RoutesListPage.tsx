@@ -2,7 +2,11 @@ import RouteCard from "../components/RouteCard";
 import { RouteObj } from "../types/RouteObj.type";
 import { useNavigate } from "react-router-dom";
 import { notification, Spin } from "antd";
-import { useRoutesQuery, useDeactivateRouteMutation } from "../queries/route.query";
+import {
+  useRoutesQuery,
+  useDeactivateRouteMutation,
+  useDeleteRouteMutation,
+} from "../queries/route.query";
 import { useEffect, useState } from "react";
 
 function RoutesListPage() {
@@ -11,10 +15,12 @@ function RoutesListPage() {
   const routesQuery = useRoutesQuery();
 
   useEffect(() => {
-    setRoutesData(routesQuery.data);
+    const data = routesQuery.data.reverse();
+    setRoutesData(data);
   }, [routesQuery.fetchStatus]);
 
   const deactivateRouteMutation = useDeactivateRouteMutation();
+  const deleteRouteMutation = useDeleteRouteMutation();
   localStorage.setItem("suffixLink", "");
 
   const navigate = useNavigate();
@@ -38,31 +44,53 @@ function RoutesListPage() {
       });
   };
 
+  const deleteRoute = (id: string) => {
+    !!id &&
+      deleteRouteMutation.mutate(id, {
+        onSuccess: () => {
+          notification.success({
+            message: "Успішно",
+            description: "Маршрут видалено",
+          });
+          routesQuery.refetch();
+        },
+        onError: (error) => {
+          notification.error({
+            message: "Помилка",
+            description: `Сталась помилка: ${error.message}`,
+          });
+        },
+      });
+  };
+
   return (
     <>
       <Spin fullscreen={true} spinning={routesQuery.isFetching}>
         {" "}
       </Spin>
       <div className="m-4">
-        <div className="flex flex-wrap-reverse flex-row-reverse gap-4 justify-center">
+        <div className="flex flex-wrap gap-4 max-md:justify-center">
           {routesData &&
-            routesData.map((route: RouteObj) => (
-              <RouteCard
-                key={route._id}
-                percentage={route.route_status_percentage}
-                routes_done={route.routes_done || 0}
-                title={route.name}
-                date={new Date(route.created_at).toLocaleString("ru-UA")}
-                handleOpenCard={() => {
-                  navigate(`${route._id}`);
-                  localStorage.setItem("suffixLink", `${route._id}` || "");
-                }}
-                img_url={route.img_url}
-                onDelete={() => deactivateRoute(route._id || "")}
-                countRoute={route.places_id_set.length}
-                is_active={route.is_active}
-              />
-            ))}
+            routesData.map((route: RouteObj) => {
+              return (
+                <RouteCard
+                  key={route._id}
+                  percentage={route.route_status_percentage}
+                  routes_done={route.routes_done || 0}
+                  title={route.name}
+                  date={new Date(route.created_at).toLocaleString("ru-UA")}
+                  handleOpenCard={() => {
+                    navigate(`${route._id}`);
+                    localStorage.setItem("suffixLink", `${route._id}` || "");
+                  }}
+                  img_url={route.img_url}
+                  onDeactivate={() => deactivateRoute(route._id || "")}
+                  onDelete={() => deleteRoute(route._id || "")}
+                  countRoute={route.places_id_set?.length || 0}
+                  is_active={route.is_active}
+                />
+              );
+            })}
         </div>
       </div>
     </>

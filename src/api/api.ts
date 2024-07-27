@@ -2,7 +2,7 @@ const BASE_URL = import.meta.env.VITE_BACKEND_API;
 
 export async function sendJson(req: {
   url: string;
-  method: "GET" | "POST" | "PATCH";
+  method: "GET" | "POST" | "PATCH" | "DELETE";
   urlParams?: Record<string, string>;
   payload?: object;
 }): Promise<any> {
@@ -46,4 +46,12 @@ export async function postJson(url: string, payload?: object, urlParams?: Record
 
 export async function patchJson(url: string, payload?: object, urlParams?: Record<string, string>) {
   return sendJson({ url, urlParams, payload, method: "PATCH" });
+}
+
+export async function deleteJson(
+  url: string,
+  payload?: object,
+  urlParams?: Record<string, string>
+) {
+  return sendJson({ url, urlParams, payload, method: "DELETE" });
 }

@@ -6,6 +6,8 @@ import {
   CarOutlined,
   LogoutOutlined,
   SettingOutlined,
+  HistoryOutlined,
+  EnvironmentOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, MenuProps, Button } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -42,6 +44,10 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
     navigate(`${activeKey}/${suffix}`);
   }, []);
 
+  useEffect(() => {
+    activeKey !== "route" && localStorage.setItem("suffixLink", "");
+  }, [activeKey]);
+
   const handleSetActiveMenu = (key: string) => {
     setActiveKey(key);
     localStorage.setItem("siderMenuActive", key);
@@ -51,7 +57,7 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
   const siderMenuData: MenuProps["items"] = [
     {
       key: "create-route",
-      icon: React.createElement(FormOutlined),
+      icon: React.createElement(EnvironmentOutlined),
       label: "Створити маршрут ",
       onClick: () => {
         handleSetActiveMenu("create-route");
@@ -60,10 +66,19 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
     },
     {
       key: "routes",
-      icon: React.createElement(CompassOutlined),
+      icon: React.createElement(FormOutlined),
       label: "Працювати",
       onClick: () => {
         handleSetActiveMenu("routes");
+        setIsCollapsed();
+      },
+    },
+    {
+      key: "history",
+      icon: React.createElement(HistoryOutlined),
+      label: "Історія",
+      onClick: () => {
+        handleSetActiveMenu("history");
         setIsCollapsed();
       },
     },
@@ -89,7 +104,7 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
           },
         }
       : null,
-      adminAccessQuery.isSuccess
+    adminAccessQuery.isSuccess
       ? {
           key: "hondacivic2004",
           icon: React.createElement(CarOutlined),
@@ -153,6 +168,7 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
         <div className="absolute bottom-0 left-0 right-0 w-full flex justify-between gap-2 p-4">
           {!isMobile ? (
             <Button
+              disabled={document.readyState === "loading"}
               size="large"
               icon={<SettingOutlined />}
               onClick={() => modal?.open("settings")}

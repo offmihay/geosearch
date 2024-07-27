@@ -34,10 +34,10 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         adminAccessQuery.refetch();
         navigate("");
       },
-      onError: (error) => {
+      onError: () => {
         notification.error({
           message: "Помилка",
-          description: `${error.message}`,
+          description: "Неправильний логін чи пароль",
         });
       },
     });
@@ -45,6 +45,7 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
   const logOut = () => {
     localStorage.clear();
+    window.location.reload();
     setToken("");
     navigate("login");
   };

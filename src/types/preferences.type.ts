@@ -5,4 +5,5 @@ export type UserPreferencesType = {
 
 export type AdminPreferencesType = {
   show_all_routes?: boolean;
+  show_all_places?: boolean;
 };

@@ -27,7 +27,6 @@ const regions = [
   "Rivne",
   "Sumy",
   "Ternopil",
-  "Ukraine",
   "Vinnytsya",
   "Volyn",
   "Zakarpattia",
