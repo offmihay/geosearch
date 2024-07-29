@@ -8,9 +8,9 @@ export enum PlaceStatus {
 
 export type PlaceSearch = {
   id?: string;
-  place_id?: string;
-  lat?: number;
-  lng?: number;
+  place_id: string;
+  lat: number;
+  lng: number;
   formatted_address?: string | null;
   business_status?: google.maps.places.BusinessStatus | null;
   google_maps_URI?: string | null;
