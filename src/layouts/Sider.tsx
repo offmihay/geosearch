@@ -8,6 +8,7 @@ import {
   SettingOutlined,
   HistoryOutlined,
   EnvironmentOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, MenuProps, Button } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -77,6 +78,17 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
         setIsCollapsed();
       },
     },
+    auth?.isAdmin(Role.Admin)
+      ? {
+          key: "users",
+          icon: React.createElement(UserOutlined),
+          label: "Користувачі",
+          onClick: () => {
+            handleSetActiveMenu("users");
+            setIsCollapsed();
+          },
+        }
+      : null,
     auth?.isAdmin(Role.Admin)
       ? {
           key: "find-places",

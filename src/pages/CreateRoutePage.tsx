@@ -1,4 +1,4 @@
-import { Button, Card, Form, Input, InputRef, Modal, Spin, notification } from "antd";
+import { Button, Card, Form, Input, InputRef, Modal, Spin, Switch, notification } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { SaveOutlined } from "@ant-design/icons";
 import { PlaceSearch } from "../types/PlaceSearch.type";
@@ -7,15 +7,22 @@ import { useAddRouteMutation } from "../queries/route.query";
 
 function CreateRoutePage() {
   const mapRef = useRef<google.maps.Map>();
-  const inputRef = useRef<InputRef>(null);
+  const inputStartRef = useRef<InputRef>(null);
+  const inputEndRef = useRef<InputRef>(null);
   const routeRef = useRef<google.maps.DirectionsService | null>(null);
 
   const [startAddress, setStartAddress] = useState<string>("");
-  const [, setIsAddressSelected] = useState<boolean>(false);
+  const [, setIsStartAddressSelected] = useState<boolean>(false);
+
+  const [endAddress, setEndAddress] = useState<string>("");
+  const [, setIsEndAddressSelected] = useState<boolean>(false);
 
   const [selectedPlacesId, setSelectedPlacesId] = useState<string[]>([]);
 
   const [orderedPlacesId, setOrderedPlacesId] = useState<string[]>([]);
+
+  const [isOptimizeRoute, setOptimizeRoute] = useState(false);
+
   const [form] = Form.useForm();
 
   const [isMapLoaded, setIsMapLoaded] = useState(false);
@@ -149,8 +156,8 @@ function CreateRoutePage() {
       "places"
     )) as google.maps.PlacesLibrary;
 
-    if (inputRef.current && inputRef.current.input) {
-      const autocomplete = new Autocomplete(inputRef.current.input, {
+    if (inputStartRef.current && inputStartRef.current.input) {
+      const autocomplete = new Autocomplete(inputStartRef.current.input, {
         types: ["geocode"],
       });
 
@@ -158,7 +165,21 @@ function CreateRoutePage() {
         const place = autocomplete.getPlace();
         if (place?.formatted_address) {
           setStartAddress(place.formatted_address);
-          setIsAddressSelected(true);
+          setIsStartAddressSelected(true);
+        }
+      });
+    }
+
+    if (inputEndRef.current && inputEndRef.current.input) {
+      const autocomplete = new Autocomplete(inputEndRef.current.input, {
+        types: ["geocode"],
+      });
+
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        if (place?.formatted_address) {
+          setEndAddress(place.formatted_address);
+          setIsEndAddressSelected(true);
         }
       });
     }
@@ -240,56 +261,60 @@ function CreateRoutePage() {
 
   const handleGetRoutes = async () => {
     const selectedRoute = selectedPlacesId;
-
-    if (selectedRoute.length == 0) {
-      console.error("Routes not found");
-      return;
-    }
-
-    const { DirectionsService } = (await google.maps.importLibrary(
-      "routes"
-    )) as google.maps.RoutesLibrary;
-
-    routeRef.current = new DirectionsService();
-    const geocoder = new google.maps.Geocoder();
-
-    // Geocode start address
-    const startPlaceId = await geocodeAddress(geocoder, startAddress);
-
-    if (!startPlaceId) {
-      notification.warning({
-        message: "Помилка",
-        description: `Перевірте чи правильно ви заповнили дані`,
-      });
-      return;
-    }
-
-    const waypoints = selectedRoute.map((placeId) => ({
-      location: { placeId },
-      stopover: true,
-    }));
-
-    routeRef.current.route(
-      {
-        origin: { placeId: startPlaceId },
-        destination: { placeId: startPlaceId },
-        waypoints,
-        optimizeWaypoints: true,
-        travelMode: google.maps.TravelMode.WALKING,
-      },
-      (result: google.maps.DirectionsResult | null, status: google.maps.DirectionsStatus) => {
-        if (status === google.maps.DirectionsStatus.OK && result) {
-          const optimizedOrder = result.routes[0].waypoint_order;
-
-          setOrderedPlacesId([...optimizedOrder.map((index: number) => selectedRoute[index])]);
-        } else {
-          notification.info({
-            message: "Помилка",
-            description: `${status}`,
-          });
-        }
+    if (isOptimizeRoute) {
+      if (selectedRoute.length == 0) {
+        console.error("Routes not found");
+        return;
       }
-    );
+
+      const { DirectionsService } = (await google.maps.importLibrary(
+        "routes"
+      )) as google.maps.RoutesLibrary;
+
+      routeRef.current = new DirectionsService();
+      const geocoder = new google.maps.Geocoder();
+
+      // Geocode start address
+      const startPlaceId = await geocodeAddress(geocoder, startAddress);
+      const endPlaceId = await geocodeAddress(geocoder, endAddress);
+
+      if (!startPlaceId) {
+        notification.warning({
+          message: "Помилка",
+          description: `Перевірте чи правильно ви заповнили дані`,
+        });
+        return;
+      }
+
+      const waypoints = selectedRoute.map((placeId) => ({
+        location: { placeId },
+        stopover: true,
+      }));
+
+      routeRef.current.route(
+        {
+          origin: { placeId: startPlaceId },
+          destination: { placeId: endPlaceId || startPlaceId },
+          waypoints,
+          optimizeWaypoints: true,
+          travelMode: google.maps.TravelMode.WALKING,
+        },
+        (result: google.maps.DirectionsResult | null, status: google.maps.DirectionsStatus) => {
+          if (status === google.maps.DirectionsStatus.OK && result) {
+            const optimizedOrder = result.routes[0].waypoint_order;
+
+            setOrderedPlacesId([...optimizedOrder.map((index: number) => selectedRoute[index])]);
+          } else {
+            notification.info({
+              message: "Помилка",
+              description: `${status}`,
+            });
+          }
+        }
+      );
+    } else {
+      setOrderedPlacesId(selectedRoute);
+    }
   };
 
   const geocodeAddress = (
@@ -358,6 +383,9 @@ function CreateRoutePage() {
               >
                 <Input placeholder="Введіть назву" />
               </Form.Item>
+              <Form.Item label="Оптимізувати маршрут" name="optimize_route">
+                <Switch onChange={setOptimizeRoute} />
+              </Form.Item>
               <Form.Item
                 label="Точка старту"
                 rules={[
@@ -369,12 +397,34 @@ function CreateRoutePage() {
                 ]}
               >
                 <Input
-                  ref={inputRef}
+                  ref={inputStartRef}
                   placeholder="Введіть адресу"
                   value={startAddress}
+                  disabled={!isOptimizeRoute}
                   onChange={(e) => {
                     setStartAddress(e.target.value);
-                    setIsAddressSelected(false);
+                    setIsStartAddressSelected(false);
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                label="Кінцева точка"
+                rules={[
+                  {
+                    required: true,
+                    message: "Введіть правильно адресу",
+                    min: 1,
+                  },
+                ]}
+              >
+                <Input
+                  ref={inputEndRef}
+                  placeholder="Введіть адресу"
+                  value={endAddress}
+                  disabled={!isOptimizeRoute}
+                  onChange={(e) => {
+                    setEndAddress(e.target.value);
+                    setIsEndAddressSelected(false);
                   }}
                 />
               </Form.Item>

@@ -19,7 +19,7 @@ export const placeStatusLabel = [
   {
     value: PlaceStatus.PROGRESSING,
     label: "В процесі",
-    color: "lightgray",
+    color: "orange",
   },
   {
     value: PlaceStatus.NOT_EXIST,
@@ -29,7 +29,7 @@ export const placeStatusLabel = [
   {
     value: PlaceStatus.SKIP,
     label: "Пропуск",
-    color: "lightred",
+    color: "purple",
   },
 ];
 

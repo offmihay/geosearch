@@ -105,21 +105,23 @@ const SettingsWindow = () => {
               <Switch />
             </Form.Item>
           </Form>
-          <Divider />
           {adminPreferencesQuery.isSuccess && (
-            <Form
-              form={formAdmin}
-              labelCol={{ span: 8 }}
-              wrapperCol={{ span: 14 }}
-              layout="horizontal"
-            >
-              <Form.Item label="Показувати маршрути всіх користувачів" name="show_all_routes">
-                <Switch />
-              </Form.Item>
-              <Form.Item label="Показувати місця всіх користувачів" name="show_all_places">
-                <Switch />
-              </Form.Item>
-            </Form>
+            <>
+              <Divider />
+              <Form
+                form={formAdmin}
+                labelCol={{ span: 8 }}
+                wrapperCol={{ span: 14 }}
+                layout="horizontal"
+              >
+                <Form.Item label="Показувати маршрути всіх користувачів" name="show_all_routes">
+                  <Switch />
+                </Form.Item>
+                <Form.Item label="Показувати місця всіх користувачів" name="show_all_places">
+                  <Switch />
+                </Form.Item>
+              </Form>
+            </>
           )}
         </Modal>
       </Spin>

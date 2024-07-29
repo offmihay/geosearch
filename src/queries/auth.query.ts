@@ -9,3 +9,11 @@ export const useLoginMutation = () => {
     retry: 1,
   });
 };
+
+export const useSignUpMutation = () => {
+  return useMutation({
+    mutationKey: [`signup`],
+    mutationFn: (loginDto: LoginField) => postJson("auth/signup", loginDto),
+    retry: 1,
+  });
+};

@@ -30,7 +30,11 @@ export async function sendJson(req: {
   const response = await fetch(fullUrl, options);
 
   if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+    const errorResponse = await response.json();
+
+    throw new Error(
+      errorResponse.message ? errorResponse.message : `HTTP error! status: ${response.status}`
+    );
   }
 
   return response.json();
