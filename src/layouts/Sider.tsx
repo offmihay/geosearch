@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import useIsMobile from "../hooks/useIsMobile";
 import { useAuth } from "../hooks/useAuth";
 import { useModal } from "../hooks/useModal";
-import { useAdminAccessQuery } from "../queries/user.query";
+import { Role } from "../types/enum/role.enum";
 
 export interface Props {
   isCollapsed: boolean;
@@ -25,11 +25,6 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
   const { Sider } = Layout;
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-
-  const adminAccessQuery = useAdminAccessQuery();
-  useEffect(() => {
-    adminAccessQuery.refetch();
-  }, []);
 
   const modal = useModal();
   const auth = useAuth();
@@ -82,7 +77,7 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
         setIsCollapsed();
       },
     },
-    adminAccessQuery.isSuccess
+    auth?.isAdmin(Role.Admin)
       ? {
           key: "find-places",
           icon: React.createElement(CompassOutlined),
@@ -93,7 +88,7 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
           },
         }
       : null,
-    adminAccessQuery.isSuccess
+    auth?.isAdmin(Role.Admin)
       ? {
           key: "mazda",
           icon: React.createElement(CarOutlined),
@@ -104,7 +99,7 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
           },
         }
       : null,
-    adminAccessQuery.isSuccess
+    auth?.isAdmin(Role.Admin)
       ? {
           key: "hondacivic2004",
           icon: React.createElement(CarOutlined),

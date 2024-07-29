@@ -21,12 +21,13 @@ export const useUserPreferencesMutation = () => {
   });
 };
 
-export const useAdminPreferencesQuery = () => {
+export const useAdminPreferencesQuery = (isAdmin: boolean) => {
   return useQuery({
     queryKey: [`admin-preferences`],
     queryFn: (): Promise<AdminPreferencesDtoType> => getJson("user/admin-preferences"),
     retry: 1,
     refetchOnWindowFocus: false,
+    enabled: isAdmin,
   });
 };
 
@@ -36,15 +37,5 @@ export const useAdminPreferencesMutation = () => {
     mutationFn: (userPreferences: { preferences: AdminPreferencesType }) =>
       postJson("user/admin-preferences", userPreferences),
     retry: 1,
-  });
-};
-
-export const useAdminAccessQuery = () => {
-  return useQuery({
-    queryKey: ["admin-access"],
-    queryFn: () => getJson("user/admin-access"),
-    retry: 1,
-    refetchOnWindowFocus: false,
-    enabled: false,
   });
 };

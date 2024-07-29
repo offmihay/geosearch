@@ -7,10 +7,13 @@ import {
   useUserPreferencesQuery,
 } from "../queries/user.query";
 import { useEffect } from "react";
+import { useAuth } from "../hooks/useAuth";
+import { Role } from "../types/enum/role.enum";
 
 const SettingsWindow = () => {
   const modal = useModal();
   if (modal?.active != "settings") return null;
+  const auth = useAuth();
 
   const [formUser] = Form.useForm();
   const [formAdmin] = Form.useForm();
@@ -18,7 +21,7 @@ const SettingsWindow = () => {
   const userPreferencesQuery = useUserPreferencesQuery();
   const userPreferencesMutation = useUserPreferencesMutation();
 
-  const adminPreferencesQuery = useAdminPreferencesQuery();
+  const adminPreferencesQuery = useAdminPreferencesQuery(auth?.isAdmin(Role.Admin) || false);
   const adminPreferencesMutation = useAdminPreferencesMutation();
 
   const handleSave = async () => {
@@ -32,11 +35,13 @@ const SettingsWindow = () => {
   };
 
   useEffect(() => {
-    if (userPreferencesQuery.isSuccess && adminPreferencesQuery.isSuccess) {
+    if (userPreferencesQuery.isSuccess) {
       formUser.setFieldsValue({
         regions: userPreferencesQuery.data.preferences.regions || [],
         show_done_places: userPreferencesQuery.data.preferences.show_done_places || false,
       });
+    }
+    if (adminPreferencesQuery.isSuccess) {
       formAdmin.setFieldsValue({
         show_all_routes: adminPreferencesQuery.data.preferences.show_all_routes || false,
         show_all_places: adminPreferencesQuery.data.preferences.show_all_places || false,
