@@ -275,7 +275,7 @@ function CreateRoutePage() {
     new MarkerClusterer({
       markers,
       map,
-      algorithmOptions: { radius: 150, maxZoom: 13 } as SuperClusterOptions,
+      algorithmOptions: { radius: 200, maxZoom: 13 } as SuperClusterOptions,
       renderer: customRenderer,
     });
     map.fitBounds(bounds);
@@ -291,6 +291,10 @@ function CreateRoutePage() {
       zoom: 6,
       mapId: "d4f8bd35a29bd93f",
       disableDefaultUI: true,
+      zoomControl: true,
+      zoomControlOptions: {
+        position: google.maps.ControlPosition.RIGHT_CENTER,
+      },
       clickableIcons: false,
     });
 

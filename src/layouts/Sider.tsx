@@ -154,14 +154,12 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
         collapsible
         collapsed={isMobile ? isCollapsed : false}
       >
-        <div className="absolute top-0 w-full pl-8 pt-8">
-          <a onClick={() => handleSetActiveMenu("reate-route")}>
-            <img
-              src="https://ukrzoovet.com.ua/static/images/logo.svg?v=1643281256"
-              className="w-7/12"
-              alt=""
-            />
-          </a>
+        <div className="absolute top-0 w-full pl-7 pt-8">
+          <img
+            src="https://ukrzoovet.com.ua/static/images/logo.svg?v=1643281256"
+            className="w-7/12"
+            alt=""
+          />
         </div>
         {isMobile && (
           <div className="absolute rounded-full right-4 top-4">
@@ -176,8 +174,18 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
             />
           </div>
         )}
-
-        <div className="h-[100px]"></div>
+        {isMobile && (
+          <div
+            className={`w-full pt-24 pb-6 ${!isCollapsed ? "ml-6" : "ml-[-200px]"} transition-all`}
+          >
+            <p className={`mt-4 font-medium text-[18px] w-[200px]`}>Вітаємо, {auth?.username}!</p>
+          </div>
+        )}
+        {!isMobile && (
+          <div className={`w-full pt-24 pb-6 ml-6`}>
+            <p className={`mt-4 font-medium text-[18px] w-[200px]`}>Вітаємо, {auth?.username}!</p>
+          </div>
+        )}
         <Menu
           mode="inline"
           style={{ borderRight: 0 }}

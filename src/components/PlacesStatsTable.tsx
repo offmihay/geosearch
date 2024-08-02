@@ -11,28 +11,29 @@ const PlacesStatsTable: React.FC<PlacesStatsTableProps> = ({ dataSource }) => {
 
   const columns = [
     {
-      title: "Користувач",
+      title: "User",
       dataIndex: "username",
       key: "username",
       width: "10%",
     },
     {
-      title: "Всього",
+      title: "Total",
       dataIndex: "total",
       key: "total",
       width: "10%",
     },
     {
-      title: "Не існує",
+      title: "Not exist",
       dataIndex: "not_exist",
       key: "not_exist",
       width: "10%",
     },
     {
-      title: "Зроблено",
+      title: "DONE !",
       dataIndex: "done",
       key: "done",
       width: "10%",
+      render: (text: string) => <p className="text-[18px] font-bold">{text}</p>,
     },
   ];
 

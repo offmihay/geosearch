@@ -12,7 +12,8 @@ interface AuthContextProviderProps {
 
 const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const [token, setToken] = useState<string>(localStorage.getItem("token") || "");
-  const [roles, setRoles] = useState<string[]>(() => {
+  const [username, setUsername] = useState<string>(localStorage.getItem("username") || "");
+  const [roles, setRoles] = useState<Role[]>(() => {
     const savedRoles = localStorage.getItem("roles");
     return savedRoles ? JSON.parse(savedRoles) : [];
   });
@@ -24,6 +25,11 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const localStorageToken = localStorage.getItem("token");
     if (localStorageToken !== token) {
       setToken(localStorageToken || "");
+    }
+
+    const localStorageUsername = localStorage.getItem("username");
+    if (localStorageUsername !== username) {
+      setToken(localStorageUsername || "");
     }
 
     const localStorageRoles = localStorage.getItem("roles");
@@ -47,6 +53,14 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   }, [token]);
 
   useEffect(() => {
+    if (username) {
+      localStorage.setItem("username", username);
+    } else {
+      localStorage.removeItem("username");
+    }
+  }, [username]);
+
+  useEffect(() => {
     if (roles.length > 0) {
       localStorage.setItem("roles", JSON.stringify(roles));
     } else {
@@ -58,9 +72,11 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
   const login = async (userData: LoginField) => {
     loginMutation.mutate(userData, {
-      onSuccess: (response: { token: string; roles: string[] }) => {
+      onSuccess: (response: { token: string; roles: Role[]; username: string }) => {
         setToken(response.token);
         localStorage.setItem("token", response.token);
+        setUsername(response.username);
+        localStorage.setItem("username", response.username);
         setRoles(response.roles);
         localStorage.setItem("roles", JSON.stringify(roles));
         navigate("");
@@ -79,6 +95,7 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     window.location.reload();
     setToken("");
     setRoles([]);
+    setUsername("");
     navigate("login");
   };
 
@@ -91,6 +108,7 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     logOut,
     token,
     roles,
+    username,
     isAdmin,
   };
   return <AuthContext.Provider value={AuthContextValue}>{children}</AuthContext.Provider>;
