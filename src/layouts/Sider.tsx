@@ -36,7 +36,7 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
   );
 
   useEffect(() => {
-    handleSetActiveMenu(localStorage.getItem("siderMenuActive") || "create-route");
+    handleSetActiveMenu(activeKey);
     const suffix = localStorage.getItem("suffixLink") || "";
     navigate(`${activeKey}/${suffix}`);
   }, []);
@@ -79,15 +79,17 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
         setIsCollapsed();
       },
     },
-    {
-      key: "statistics",
-      icon: React.createElement(BarChartOutlined),
-      label: "Статистика",
-      onClick: () => {
-        handleSetActiveMenu("statistics");
-        setIsCollapsed();
-      },
-    },
+    auth?.isAdmin(Role.Admin)
+      ? {
+          key: "statistics",
+          icon: React.createElement(BarChartOutlined),
+          label: "Статистика",
+          onClick: () => {
+            handleSetActiveMenu("statistics");
+            setIsCollapsed();
+          },
+        }
+      : null,
     auth?.isAdmin(Role.Admin)
       ? {
           key: "users",

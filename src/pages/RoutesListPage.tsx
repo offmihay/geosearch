@@ -72,7 +72,7 @@ function RoutesListPage() {
       </Spin>
       <div className="m-4">
         <div className="flex flex-wrap gap-4 max-md:justify-center">
-          {routesData &&
+          {routesData.length != 0 &&
             routesData.map((route: RouteObj) => {
               return (
                 <RouteCard

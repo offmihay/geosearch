@@ -4,6 +4,7 @@ import { SaveOutlined } from "@ant-design/icons";
 import { PlaceSearch } from "../types/PlaceSearch.type";
 import { usePlacesQuery } from "../queries/place.query";
 import { useAddRouteMutation } from "../queries/route.query";
+import { Cluster, MarkerClusterer, SuperClusterOptions } from "@googlemaps/markerclusterer";
 
 function CreateRoutePage() {
   const mapRef = useRef<google.maps.Map>();
@@ -82,7 +83,7 @@ function CreateRoutePage() {
 
   useEffect(() => {
     isMapLoaded && placesQuery.isSuccess && handleSetMarkers();
-  }, [isMapLoaded, placesQuery.isSuccess]);
+  }, [isMapLoaded, placesQuery.fetchStatus]);
 
   useEffect(() => {
     isModalOpen && handleLoadAutocomplete();
@@ -185,9 +186,40 @@ function CreateRoutePage() {
     }
   };
 
+  const customRenderer = {
+    render(cluster: Cluster) {
+      const { count, position } = cluster;
+      const color = "#007bff";
+
+      const svg = window.btoa(`
+        <svg fill="${color}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+          <circle cx="120" cy="120" opacity=".6" r="70" />
+          <circle cx="120" cy="120" opacity=".3" r="90" />
+          <circle cx="120" cy="120" opacity=".2" r="110" />
+          <circle cx="120" cy="120" opacity=".1" r="130" />
+        </svg>`);
+
+      // Create and return a new marker for the cluster
+      return new google.maps.Marker({
+        position,
+        icon: {
+          url: `data:image/svg+xml;base64,${svg}`,
+          scaledSize: new google.maps.Size(45, 45),
+        },
+        label: {
+          text: String(count),
+          color: "rgba(255,255,255,0.9)",
+          fontSize: "12px",
+        },
+        zIndex: 1000 + count,
+      });
+    },
+  };
+
   const handleSetMarkers = async () => {
     const map = mapRef.current!;
     const bounds = new google.maps.LatLngBounds();
+    const markers: any = [];
 
     const { AdvancedMarkerElement } = (await google.maps.importLibrary(
       "marker"
@@ -230,6 +262,7 @@ function CreateRoutePage() {
       };
 
       const markerView = new AdvancedMarkerElement(markerOptions);
+      markers.push(markerView);
 
       if (!isFinished(place)) {
         markerView.addListener("click", () => {
@@ -237,6 +270,13 @@ function CreateRoutePage() {
         });
       }
       bounds.extend(location as unknown as google.maps.LatLng);
+    });
+
+    new MarkerClusterer({
+      markers,
+      map,
+      algorithmOptions: { radius: 150, maxZoom: 13 } as SuperClusterOptions,
+      renderer: customRenderer,
     });
     map.fitBounds(bounds);
   };
@@ -385,6 +425,7 @@ function CreateRoutePage() {
               </Form.Item>
               <Form.Item label="Оптимізувати маршрут" name="optimize_route">
                 <Switch onChange={setOptimizeRoute} />
+                <span className="ml-4">(макс. 25 точок)</span>
               </Form.Item>
               <Form.Item
                 label="Точка старту"

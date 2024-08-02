@@ -37,7 +37,7 @@ interface StatisticsTableProps {
   dataSource: StatisticsDataType[];
 }
 
-const StatisticsTable: React.FC<StatisticsTableProps> = ({ dataSource }) => {
+const RouteStatsTable: React.FC<StatisticsTableProps> = ({ dataSource }) => {
   const [form] = Form.useForm();
   const [data, setData] = useState(dataSource);
   const [editingKey, setEditingKey] = useState<string | number | bigint>("");
@@ -211,4 +211,4 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ dataSource }) => {
   );
 };
 
-export default StatisticsTable;
+export default RouteStatsTable;

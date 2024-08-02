@@ -9,8 +9,4 @@ export type StatisticsDataType = {
   done_at: string;
   updated_at: string;
   username?: string;
-  user: {
-    username: string;
-    _id: string;
-  };
 };

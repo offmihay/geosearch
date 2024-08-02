@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { getJson, patchJson, postJson } from "../api/api";
 import { PlaceSearch } from "../types/PlaceSearch.type";
 import { StatisticsDataType } from "../types/StatisticsData.type";
+import { PlaceStatsType } from "../types/PlaceStats.type";
 
 export const usePlacesQuery = () => {
   return useQuery({
@@ -27,6 +28,15 @@ export const useTablePlacesQuery = () => {
     queryFn: (): Promise<StatisticsDataType[]> => getJson("places/done"),
     initialData: [],
     refetchOnWindowFocus: false,
+    retry: 1,
+  });
+};
+
+export const useStatsPlacesMutation = () => {
+  return useMutation({
+    mutationKey: ["stats-places"],
+    mutationFn: (daterange: [Date, Date] | null): Promise<PlaceStatsType[]> =>
+      postJson("places/stats", { daterange }),
     retry: 1,
   });
 };

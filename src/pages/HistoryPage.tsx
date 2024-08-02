@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTablePlacesQuery } from "../queries/place.query";
-import StatisticsTable from "../components/RouteStatsTable/RouteStatsTable";
+import RouteStatsTable from "../components/RouteStatsTable/RouteStatsTable";
 
 function HistoryPage() {
   const tablePlacesQuery = useTablePlacesQuery();
@@ -21,7 +21,7 @@ function HistoryPage() {
 
   return (
     <div style={{ overflow: "auto" }} className="p-4">
-      {isDataTransformed && <StatisticsTable dataSource={tablePlacesQuery.data} />}
+      {isDataTransformed && <RouteStatsTable dataSource={tablePlacesQuery.data} />}
     </div>
   );
 }
