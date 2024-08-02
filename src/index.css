@@ -12,24 +12,15 @@ body{
     height: 100svh;
 }
 
-/* @supports(padding:max(0px)) {
-    body, header, footer {
-        padding-left: min(0vmin, env(safe-area-inset-left));
-        padding-right: min(0vmin, env(safe-area-inset-right));
-    }
-} */
-
 img {
     pointer-events: none;
     user-select: none;
   }
 
 
+.ant-float-btn-icon{
+     width: unset !important;
+    height: unset !important;
+}
+
   
-/* @media screen and (max-width: 1000px) {
-    .ant-table-wrapper {
-        max-width: unset;
-        width: 900px;
-    }
-  
-} */

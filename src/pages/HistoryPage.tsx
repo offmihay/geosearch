@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import StatisticsTable from "../components/StatisticsTable";
 import { useTablePlacesQuery } from "../queries/place.query";
+import StatisticsTable from "../components/RouteStatsTable/RouteStatsTable";
 
 function HistoryPage() {
   const tablePlacesQuery = useTablePlacesQuery();

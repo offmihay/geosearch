@@ -1,9 +1,9 @@
 import { Form, notification, Popconfirm, Table, TableProps, Tag, Typography } from "antd";
-import { StatisticsDataType } from "../types/StatisticsData.type";
 import { useState } from "react";
 import EditableCell from "./EditableCell";
-import { usePatchPlacesMutation } from "../queries/place.query";
-import { PlaceStatus } from "../types/PlaceSearch.type";
+import { usePatchPlacesMutation } from "../../queries/place.query";
+import { PlaceStatus } from "../../types/PlaceSearch.type";
+import { StatisticsDataType } from "../../types/StatisticsData.type";
 
 export const placeStatusLabel = [
   {
@@ -29,7 +29,7 @@ export const placeStatusLabel = [
   {
     value: PlaceStatus.SKIP,
     label: "Пропуск",
-    color: "purple",
+    color: "blue",
   },
 ];
 
@@ -189,6 +189,7 @@ const StatisticsTable: React.FC<StatisticsTableProps> = ({ dataSource }) => {
       }),
     };
   });
+
   return (
     <Form form={form} component={false}>
       <Table

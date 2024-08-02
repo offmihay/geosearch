@@ -21,14 +21,24 @@ export const useAddRouteMutation = () => {
   });
 };
 
-export const useCurrPlaceQuery = (routeId?: string) => {
+export const useCurrPlaceQuery = (
+  isActiveQuery: boolean,
+  routeId?: string,
+  nearest?: boolean,
+  lat?: string,
+  lng?: string
+) => {
   return useQuery({
-    queryKey: ["curr-place"],
+    queryKey: ["curr-place", routeId, nearest, lat, lng],
     queryFn: (): Promise<{ isEmpty: boolean; place?: PlaceSearch }> =>
-      getJson(`routes/${routeId}/curr-place`),
+      getJson(`routes/${routeId}/curr-place`, undefined, {
+        ...(nearest ? { nearest: nearest.toString() } : {}),
+        ...(lat ? { lat } : {}),
+        ...(lng ? { lng } : {}),
+      }),
     refetchOnWindowFocus: false,
     retry: 1,
-    enabled: !!routeId,
+    enabled: isActiveQuery && !!routeId,
   });
 };
 

@@ -14,6 +14,7 @@ import SettingsWindow from "../components/SettingsWindow";
 import HondaPage from "../pages/HondaPage";
 import HistoryPage from "../pages/HistoryPage";
 import UsersPage from "../pages/UsersPage";
+import StatisticsPage from "../pages/StatisticsPage";
 
 const { Content } = Layout;
 
@@ -52,6 +53,7 @@ const HomepageLayout = () => {
               <Route path="hondacivic2004" element={<HondaPage />} />
               <Route path="history" element={<HistoryPage />} />
               <Route path="users" element={<UsersPage />} />
+              <Route path="statistics" element={<StatisticsPage />} />
             </Routes>
           </Content>
         </Layout>

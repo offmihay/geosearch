@@ -1,7 +1,7 @@
 import { Form, Input, InputNumber, Select, Tag } from "antd";
-import { StatisticsDataType } from "../types/StatisticsData.type";
-import { PlaceStatus } from "../types/PlaceSearch.type";
-import { placeStatusLabel } from "./StatisticsTable";
+import { StatisticsDataType } from "../../types/StatisticsData.type";
+import { PlaceStatus } from "../../types/PlaceSearch.type";
+import { placeStatusLabel } from "./RouteStatsTable";
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean;
@@ -25,16 +25,18 @@ const EditableCell: React.FC<React.PropsWithChildren<EditableCellProps>> = ({
   const inputNode =
     dataIndex === "place_status" ? (
       <Select>
-        {Object.keys(PlaceStatus).map((key) => {
-          const statusObj = placeStatusLabel.find((item) => item.value === key);
-          return (
-            <Select.Option key={key} value={key}>
-              <Tag color={statusObj?.color} key={key}>
-                {statusObj?.label}
-              </Tag>
-            </Select.Option>
-          );
-        })}
+        {[PlaceStatus.DONE, PlaceStatus.NOT_EXIST, PlaceStatus.PROGRESSING, PlaceStatus.SKIP].map(
+          (key) => {
+            const statusObj = placeStatusLabel.find((item) => item.value === key);
+            return (
+              <Select.Option key={key} value={key}>
+                <Tag color={statusObj?.color} key={key}>
+                  {statusObj?.label}
+                </Tag>
+              </Select.Option>
+            );
+          }
+        )}
       </Select>
     ) : inputType === "number" ? (
       <InputNumber />

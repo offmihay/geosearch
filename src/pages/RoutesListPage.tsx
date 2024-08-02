@@ -15,8 +15,10 @@ function RoutesListPage() {
   const routesQuery = useRoutesQuery();
 
   useEffect(() => {
-    const data = routesQuery.data.reverse();
-    setRoutesData(data);
+    if (routesQuery.isSuccess) {
+      const data = routesQuery.data.reverse();
+      setRoutesData(data);
+    }
   }, [routesQuery.fetchStatus]);
 
   const deactivateRouteMutation = useDeactivateRouteMutation();

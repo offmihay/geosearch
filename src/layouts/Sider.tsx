@@ -9,6 +9,7 @@ import {
   HistoryOutlined,
   EnvironmentOutlined,
   UserOutlined,
+  BarChartOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, MenuProps, Button } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -75,6 +76,15 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
       label: "Історія",
       onClick: () => {
         handleSetActiveMenu("history");
+        setIsCollapsed();
+      },
+    },
+    {
+      key: "statistics",
+      icon: React.createElement(BarChartOutlined),
+      label: "Статистика",
+      onClick: () => {
+        handleSetActiveMenu("statistics");
         setIsCollapsed();
       },
     },
