@@ -47,6 +47,8 @@ const RouteInfoPage = () => {
 
   const params = (place?: PlaceSearch) => {
     return {
+      "entry.549105523": place?.place_id,
+      "entry.1209199584": place?.city,
       "entry.310662946": place?.national_phone_number,
       "entry.1664904206": place?.national_phone_number,
       "entry.628660627": place?.display_name,
