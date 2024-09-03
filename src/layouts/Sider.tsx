@@ -3,7 +3,6 @@ import {
   FormOutlined,
   CompassOutlined,
   CloseOutlined,
-  CarOutlined,
   LogoutOutlined,
   SettingOutlined,
   HistoryOutlined,
@@ -111,29 +110,7 @@ const Sider = ({ isCollapsed, setIsCollapsed }: Props) => {
             setIsCollapsed();
           },
         }
-      : null,
-    auth?.isAdmin(Role.Admin)
-      ? {
-          key: "mazda",
-          icon: React.createElement(CarOutlined),
-          label: "mazda cx-5",
-          onClick: () => {
-            handleSetActiveMenu("mazda");
-            setIsCollapsed();
-          },
-        }
-      : null,
-    auth?.isAdmin(Role.Admin)
-      ? {
-          key: "hondacivic2004",
-          icon: React.createElement(CarOutlined),
-          label: "honda civic????????? 2004 sigma",
-          onClick: () => {
-            handleSetActiveMenu("hondacivic2004");
-            setIsCollapsed();
-          },
-        }
-      : null,
+      : null
   ];
 
   return (

@@ -9,9 +9,7 @@ import CreateRoutePage from "../pages/CreateRoutePage";
 import RoutesListPage from "../pages/RoutesListPage";
 import RouteInfoPage from "../pages/RouteInfoPage";
 import FindPlacesPage from "../pages/FindPlacesPage";
-import MazdaPage from "../pages/MazdaPage";
 import SettingsWindow from "../components/SettingsWindow";
-import HondaPage from "../pages/HondaPage";
 import HistoryPage from "../pages/HistoryPage";
 import UsersPage from "../pages/UsersPage";
 import StatisticsPage from "../pages/StatisticsPage";
@@ -49,8 +47,6 @@ const HomepageLayout = () => {
               <Route path="/routes" element={<RoutesListPage />} />
               <Route path="/routes/:id" element={<RouteInfoPage />} />
               <Route path="find-places" element={<FindPlacesPage />} />
-              <Route path="mazda" element={<MazdaPage />} />
-              <Route path="hondacivic2004" element={<HondaPage />} />
               <Route path="history" element={<HistoryPage />} />
               <Route path="users" element={<UsersPage />} />
               <Route path="statistics" element={<StatisticsPage />} />
