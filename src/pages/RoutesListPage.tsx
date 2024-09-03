@@ -19,7 +19,7 @@ function RoutesListPage() {
       const data = routesQuery.data.reverse();
       setRoutesData(data);
     }
-  }, [routesQuery.fetchStatus]);
+  }, [routesQuery.isSuccess]);
 
   const deactivateRouteMutation = useDeactivateRouteMutation();
   const deleteRouteMutation = useDeleteRouteMutation();
