@@ -16,10 +16,10 @@ function RoutesListPage() {
 
   useEffect(() => {
     if (routesQuery.isSuccess) {
-      const data = routesQuery.data.reverse();
+      const data = [...routesQuery.data].reverse();
       setRoutesData(data);
     }
-  }, [routesQuery.isSuccess]);
+  }, [routesQuery.fetchStatus]);
 
   const deactivateRouteMutation = useDeactivateRouteMutation();
   const deleteRouteMutation = useDeleteRouteMutation();
