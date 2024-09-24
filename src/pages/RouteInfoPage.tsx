@@ -1,5 +1,13 @@
 import { useParams } from "react-router-dom";
-import { Button, Card, FloatButton, Popconfirm, Select, Spin, notification } from "antd";
+import {
+  Button,
+  Card,
+  FloatButton,
+  Popconfirm,
+  Select,
+  Spin,
+  notification,
+} from "antd";
 import { PlaceSearch, PlaceStatus } from "../types/PlaceSearch.type";
 import {
   CloudUploadOutlined,
@@ -17,7 +25,9 @@ import useIsMobile from "../hooks/useIsMobile";
 const RouteInfoPage = () => {
   const { id } = useParams();
   const isMobile = useIsMobile();
-  const [userLocation, setUserLocation] = useState<{ lat: string; lng: string } | {}>({});
+  const [userLocation, setUserLocation] = useState<
+    { lat: string; lng: string } | {}
+  >({});
   const [isNearest, setIsNearest] = useState(false);
   const [isActiveQuery, setIsActiveQuery] = useState(true);
 
@@ -41,7 +51,9 @@ const RouteInfoPage = () => {
     const url = new URL(
       "https://docs.google.com/forms/d/e/1FAIpQLSfkDsu7_UML3muXMvyrq2L9x4gAXUnshyA3SSqNFcH5vLIRug/viewform?usp=pp_url"
     );
-    Object.keys(params).forEach((key) => url.searchParams.append(key, params[key]));
+    Object.keys(params).forEach((key) =>
+      url.searchParams.append(key, params[key])
+    );
     return url.toString();
   };
 
@@ -56,7 +68,10 @@ const RouteInfoPage = () => {
     };
   };
 
-  const handleUpdateStatus = (id: string, status: PlaceSearch["place_status"]) => {
+  const handleUpdateStatus = (
+    id: string,
+    status: PlaceSearch["place_status"]
+  ) => {
     const values = { place_id: id, place_status: status };
     updatePlaceStatusMutation.mutate(values, {
       onSuccess: () => {
@@ -107,7 +122,11 @@ const RouteInfoPage = () => {
   return (
     <>
       <div className="m-4 mt-16">
-        <Spin spinning={currPlaceQuery.isFetching || updatePlaceStatusMutation.isPending}>
+        <Spin
+          spinning={
+            currPlaceQuery.isFetching || updatePlaceStatusMutation.isPending
+          }
+        >
           <Card
             className="max-w-[600px] m-auto"
             title={`Точка - ${currPlaceQuery.data?.place?.display_name}`}
@@ -130,6 +149,20 @@ const RouteInfoPage = () => {
                 </Button>
                 <Button
                   type="dashed"
+                  style={{ width: 300, height: 50 }}
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSd0j-2Mwswrem2psjU8uRAr9pOfySOGXOvmSrZ3voV9Gfiwcg/viewform?usp=sf_link"
+                  target="_blank"
+                  disabled={!currPlaceQuery.data?.place}
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    <SolutionOutlined style={{ fontSize: 25 }} />
+                    <span style={{ fontSize: 16 }}>
+                      Форма для менеджерів УкрЗоо
+                    </span>
+                  </div>
+                </Button>
+                <Button
+                  type="dashed"
                   danger
                   style={{ width: 300, height: 50 }}
                   href={currPlaceQuery.data?.place?.google_maps_URI || ""}
@@ -144,9 +177,11 @@ const RouteInfoPage = () => {
                   style={{ width: 300, height: 50 }}
                   placeholder="Please select"
                   options={placeStatusLabel.filter((status) =>
-                    [PlaceStatus.DONE, PlaceStatus.NOT_EXIST, PlaceStatus.SKIP].includes(
-                      status.value
-                    )
+                    [
+                      PlaceStatus.DONE,
+                      PlaceStatus.NOT_EXIST,
+                      PlaceStatus.SKIP,
+                    ].includes(status.value)
                   )}
                   onChange={setStatus}
                 />
@@ -155,7 +190,10 @@ const RouteInfoPage = () => {
                   icon={<QuestionCircleOutlined style={{ color: "red" }} />}
                   onConfirm={() => {
                     if (currPlaceQuery.data?.place?.place_id) {
-                      handleUpdateStatus(currPlaceQuery.data?.place.place_id, status);
+                      handleUpdateStatus(
+                        currPlaceQuery.data?.place.place_id,
+                        status
+                      );
                     } else {
                       notification.error({
                         message: "Помилка",
@@ -172,7 +210,10 @@ const RouteInfoPage = () => {
                   cancelButtonProps={{ className: "w-[60px] h-[30px]" }}
                   overlayClassName="w-[300px]"
                 >
-                  <Button type="primary" style={{ width: 300, height: 50, marginTop: 40 }}>
+                  <Button
+                    type="primary"
+                    style={{ width: 300, height: 50, marginTop: 40 }}
+                  >
                     <div className="flex items-center justify-center gap-2">
                       <CloudUploadOutlined style={{ fontSize: 25 }} />
                       <span style={{ fontSize: 16 }}>Відправити</span>
@@ -186,7 +227,12 @@ const RouteInfoPage = () => {
         <FloatButton
           icon={<EnvironmentOutlined style={{ fontSize: 25 }} />}
           shape="circle"
-          style={{ right: isMobile ? 30 : 100, bottom: isMobile ? 30 : 100, width: 60, height: 60 }}
+          style={{
+            right: isMobile ? 30 : 100,
+            bottom: isMobile ? 30 : 100,
+            width: 60,
+            height: 60,
+          }}
           className="flex justify-center items-center"
           onClick={() => handleFindNearest()}
         />
